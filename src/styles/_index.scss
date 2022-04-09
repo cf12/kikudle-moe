@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+
+$maxWidth: 800px;
+
+$bg: #121212;
+$dark1: #bbbbbb;
+
+:export {
+  bg: $bg;
+  dark1: $dark1;
+}

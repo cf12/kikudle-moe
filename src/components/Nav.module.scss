@@ -1,0 +1,31 @@
+@import "styles";
+
+.container {
+  padding: 16px 0;
+
+  border-bottom: 1px solid $dark1;
+
+  .containerInner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  
+    margin: 0 auto;
+    max-width: $maxWidth;
+    width: 90%;
+
+    & > svg {
+      color: white;
+      width: 32px;
+      height: 32px;
+    }
+  
+    h1 {
+      font-size: 1.50rem;
+    }
+  
+    .center {
+      margin: 0 auto;
+    }
+  }
+}
