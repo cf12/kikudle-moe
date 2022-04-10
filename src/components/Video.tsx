@@ -4,6 +4,7 @@ import { IoIosPause, IoIosPlay } from "react-icons/io"
 import styles from "./Video.module.scss"
 
 import GameContext from "contexts/GameContext"
+import { GameState } from "pages/_app"
 import { callbackify } from "util"
 
 // Game stage:
@@ -22,9 +23,10 @@ export default function Video() {
   const videoEl = useRef()
   const progressEl = useRef()
 
-  const { stage, answer } = useContext(GameContext)
+  const { stage, answer, gameState } = useContext(GameContext)
 
-  const duration = BREAKPOINTS?.[stage]
+  const duration =
+    gameState === GameState.PLAYING ? BREAKPOINTS?.[stage] : MAX_DURATION
 
   useEffect(() => {
     const video = videoEl.current
@@ -68,7 +70,14 @@ export default function Video() {
         <div
           className={styles.videoOverlay}
           style={{
-            backgroundColor: `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`,
+            backgroundColor:
+              gameState === GameState.PLAYING
+                ? `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`
+                : "transparent",
+            backdropFilter: 
+              gameState === GameState.PLAYING
+                ? "blur(24px)"
+                : "none",
           }}
           onClick={() => {
             setPlaying((playing) => !playing)
@@ -77,11 +86,7 @@ export default function Video() {
           {playing ? <IoIosPause /> : <IoIosPlay />}
         </div>
 
-        <video
-          id="video"
-          src={answer.video}
-          ref={videoEl}
-        />
+        <video id="video" src={answer?.video} ref={videoEl} />
       </div>
 
       <div className={styles.progress}>

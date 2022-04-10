@@ -9,7 +9,6 @@ import GameContext from "contexts/GameContext"
 const fetcher = (query) => {
   if (!query) return {}
 
-  console.log('askdljaskd')
   return request(
     "https://graphql.anilist.co/",
     `

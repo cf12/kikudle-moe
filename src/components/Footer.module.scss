@@ -19,3 +19,47 @@
     max-width: $maxWidth;
   }
 }
+
+.containerWin {
+  background-color: rgba(green, 10%);
+  height: 161px;
+
+  box-sizing: border-box;
+  text-align: center;
+
+  p {
+    color: $dark1;
+
+    bold {
+      color: white;
+    }
+
+    a {
+      color: white;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}
+
+.containerLose {
+  background-color: rgba(red, 10%);
+  height: 161px;
+
+  box-sizing: border-box;
+  text-align: center;
+
+  p {
+    color: $dark1;
+
+    bold {
+      color: white;
+    }
+
+    a {
+      color: white;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}
