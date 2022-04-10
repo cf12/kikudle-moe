@@ -1,0 +1,17 @@
+@import "styles";
+
+.container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  border-top: 1px solid $dark1;
+  padding: 24px 0 24px 0;
+
+  .containerInner {
+    margin: 0 auto;
+    max-width: $maxWidth;
+  }
+}
