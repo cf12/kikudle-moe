@@ -101,9 +101,8 @@
   display: flex;
   align-items: center;
 
-  margin-top: 16px;
-
   height: 48px;
+  margin-top: 16px;
 
   & > button:first-child {
     margin-right: auto;
@@ -115,6 +114,8 @@
     border: 1px solid darken($dark1, 40%);
     background-color: rgba(white, 5%);
 
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 800;
     color: white;
 
     &:hover:enabled,

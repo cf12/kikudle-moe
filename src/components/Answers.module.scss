@@ -3,7 +3,60 @@
 .container {
   width: 100%;
 
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: 500;
+
   table {
     width: 100%;
+
+    & > thead > tr {
+      th {
+        text-align: left;
+      }
+    }
+
+    & > tbody > tr {
+      .below, .above {
+        color: orange;
+      }
+
+      .below::after {
+        content: "↓";
+      }
+
+      .above::after {
+        content: "↑";
+      }
+
+      .correct {
+        color: green;
+      }
+
+      .none {
+        color: gray;
+      }
+
+      .marquee {
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+
+        & > p {
+          display: inline-block;
+          margin: 0;
+          padding-left: 100%;
+          animation: marquee 5s linear infinite;
+        }
+
+        @keyframes marquee {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(-100%, 0);
+          }
+        }
+      }
+    }
   }
 }

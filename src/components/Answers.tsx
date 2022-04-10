@@ -4,31 +4,80 @@ import styles from "./Answers.module.scss"
 
 import GameContext from "contexts/GameContext"
 
+const parseSeason = (userAnswer, answer) => {
+  const userSeasonDate = new Date(
+    `${userAnswer.season} ${userAnswer.seasonYear}`
+  )
+  const answerSeasonDate = new Date(`${answer.season} ${answer.seasonYear}`)
+  const displaySeason =
+    userAnswer.season && userAnswer.seasonYear
+      ? `${userAnswer.season} ${userAnswer.seasonYear}`
+      : "—"
+
+  let res = styles.correct
+
+  if (
+    !userAnswer.season ||
+    !userAnswer.seasonYear ||
+    !answer.season ||
+    !answer.seasonYear
+  )
+    res = styles.none
+  else if (userSeasonDate < answerSeasonDate) res = styles.above
+  else if (userSeasonDate > answerSeasonDate) res = styles.below
+
+  return <td className={res}>{displaySeason}</td>
+}
+
+const parseRanking = (userAnswer, answer) => {
+  const userRanking = userAnswer.rankings.find(
+    ({ type, allTime }) => type === "POPULAR" && allTime
+  )?.rank
+  const answerRanking = answer.rankings.find(
+    ({ type, allTime }) => type === "POPULAR" && allTime
+  )?.rank
+  const displayRanking = userRanking ? `#${userRanking}` : "—"
+
+  let res = styles.correct
+
+  if (!userRanking || !answerRanking) res = styles.none
+  else if (userAnswer.ranking < answer.ranking) res = styles.above
+  else if (userAnswer.ranking > answer.ranking) res = styles.above
+
+  return <td className={res}>{displayRanking}</td>
+}
+
+const parsePopularity = (userAnswer, answer) => {
+  const displayPopularity = userAnswer.popularity
+    ? Number(userAnswer.popularity).toLocaleString()
+    : "—"
+  let res = styles.correct
+
+  if (!userAnswer.popularity || !answer.popularity) res = styles.none
+  if (userAnswer.popularity < answer.popularity) res = styles.above
+  else if (userAnswer.popularity > answer.popularity) res = styles.above
+
+  return <td className={res}>{displayPopularity}</td>
+}
+
 export default function Answers() {
-  const { answers } = useContext(GameContext)
+  const { answers, answer } = useContext(GameContext)
+
   return (
     <div className={styles.container}>
       <table>
         <thead>
           <tr>
             <th>Name</th>
-            <th>Season + Year</th>
-            <th>Ranking (all time)</th>
+            <th>Year</th>
+            <th>Ranking</th>
             <th>Popularity</th>
-            <th>Genres (top 2)</th>
+            <th>Genres</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>???</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-            <td>—</td>
-          </tr>
-
-          {answers.map((answer, index) => {
-            if (!answer) {
+          {answers.map((userAnswer, index) => {
+            if (!userAnswer) {
               return (
                 <tr>
                   <td>SKIPPED</td>
@@ -40,18 +89,15 @@ export default function Answers() {
               )
             }
 
-            const title = answer.title
-            const ranking = answer.rankings.find(
-              ({ type, allTime }) => type === "POPULAR" && allTime
-            )?.rank
-
             return (
-              <tr key={answer.id}>
-                <td>{title.english}</td>
-                <td>{`${answer.season} ${answer.seasonYear}`}</td>
-                <td>{ranking ? `#${ranking}` : "—"}</td>
-                <td>{Number(answer.popularity).toLocaleString()}</td>
-                <td>{answer.genres.join(", ")}</td>
+              <tr key={userAnswer.id}>
+                <td className={styles.marquee}>
+                  <p>{userAnswer.title.english}</p>
+                </td>
+                {parseSeason(userAnswer, answer)}
+                {parseRanking(userAnswer, answer)}
+                {parsePopularity(userAnswer, answer)}
+                <td>{userAnswer.genres.join(", ")}</td>
               </tr>
             )
           })}
