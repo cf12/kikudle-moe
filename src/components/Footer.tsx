@@ -10,7 +10,7 @@ import { GameState } from "pages/_app"
 export default function Footer() {
   const { gameState, answer, answers } = useContext(GameContext)
 
-  if (!answer) return null
+  if (!answer) return undefined
   else if (gameState === GameState.PLAYING)
     return (
       <footer className={styles.container}>
@@ -26,7 +26,7 @@ export default function Footer() {
           <h1>Congratulations!</h1>
 
           <p>
-            You found today's anime in <bold>{answers.length}</bold> tries:{" "}
+            You found today&apos;s anime in <bold>{answers.length}</bold> tries:{" "}
             <a href={`https://anilist.co/anime/${answer.id}`}>{answer.title.english}</a>
           </p>
         </div>
@@ -39,7 +39,7 @@ export default function Footer() {
           <h1>Better luck tomorrow!</h1>
 
           <p>
-            Today's anime was:{" "}
+            Today&apos;s anime was:{" "}
             <a href={`https://anilist.co/anime/${answer.id}`}>{answer.title.english}</a>
           </p>
         </div>

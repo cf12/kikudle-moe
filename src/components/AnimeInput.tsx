@@ -6,7 +6,7 @@ import useSWRImmutable from "swr/immutable"
 import styles from "./AnimeInput.module.scss"
 import GameContext from "contexts/GameContext"
 
-const fetcher = (query) => {
+const fetcher = (query: string) => {
   if (!query) return {}
 
   return request(
@@ -46,9 +46,9 @@ const fetcher = (query) => {
 }
 
 export default function AnimeInput() {
-  const [query, setQuery] = useState<String>(null)
-  const [submission, setSubmission] = useState<String>(null)
-  const [effectiveQuery, setEffectiveQuery] = useState<String>(null)
+  const [query, setQuery] = useState<String | null>(null)
+  const [submission, setSubmission] = useState<String | null>(null)
+  const [effectiveQuery, setEffectiveQuery] = useState<String | null>(null)
   const [isTyping, setIsTyping] = useState<Boolean>(false)
 
   const { stage, setStage, answers, setAnswers } = useContext(GameContext)
