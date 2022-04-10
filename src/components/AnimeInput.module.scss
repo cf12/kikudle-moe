@@ -1,6 +1,8 @@
 @import "styles";
 
 .container {
+  position: relative;
+
   width: 100%;
 
   box-sizing: border-box;
@@ -31,59 +33,81 @@
 
     color: white;
   }
-}
 
-.choices {
-  display: flex;
-  flex-direction: column;
-  padding-left: 0;
+  .choices {
+    position: absolute;
+    top: 100%;
+    left: 0;
 
-  border: 1px solid $dark1;
+    width: 100%;
 
-  max-height: 200px;
-  overflow: scroll;
-
-  & > li {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    padding-left: 0;
 
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+    border: 1px solid $dark1;
 
-    border-bottom: 1px solid $dark1;
+    max-height: 200px;
+    overflow: scroll;
 
-    & > img {
-      width: 50px;
-      height: 50px;
-      min-width: 50px;
-      min-height: 50px;
-      object-fit: cover;
-      object-position: center;
+    & > li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
 
-      border-right: 1px solid $dark1;
-    }
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
 
-    & > p {
-      font-size: 0.85rem;
-      color: rgba(white, 60%);
+      background-color: $bg;
+      border-bottom: 1px solid $dark1;
 
-      & > mark {
-        background: none;
-        color: white;
+      & > img {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+        object-fit: cover;
+        object-position: center;
+
+        border-right: 1px solid $dark1;
+      }
+
+      & > p {
+        font-size: 0.85rem;
+        color: rgba(white, 60%);
+
+        & > mark {
+          background: none;
+          color: white;
+        }
+      }
+
+      &:hover {
+        cursor: pointer;
+        user-select: none;
+
+        background-color: lighten($bg, 5%);
+
+        text-decoration: underline;
+        text-underline-offset: 2px;
       }
     }
+  }
+}
 
-    &:hover {
-      cursor: pointer;
-      user-select: none;
+.buttons {
+  display: flex;
+  align-items: center;
 
-      background-color: rgba(white, 5%);
+  height: 48px;
 
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
+  & > a:first-child {
+    margin-right: auto;
+  }
+
+  & > a {
+    font-weight: 600;
   }
 }

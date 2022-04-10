@@ -45,10 +45,13 @@ export default function AnimeInput() {
   const [query, setQuery] = useState<String>(null)
   const [submission, setSubmission] = useState<String>(null)
   const [effectiveQuery, setEffectiveQuery] = useState<String>(null)
-  const inputEl = useRef(null)
-  const { data, error, isValidating } = useSWRImmutable(effectiveQuery, fetcher)
-  const isLoading = (!error && !data) || isValidating
   const [isTyping, setIsTyping] = useState<Boolean>(false)
+
+  const { data, error, isValidating } = useSWRImmutable(effectiveQuery, fetcher)
+
+  const inputEl = useRef(null)
+
+  const isLoading = (!error && !data) || isValidating
 
   useEffect(() => {
     setIsTyping(true)
@@ -65,7 +68,7 @@ export default function AnimeInput() {
     <>
       <div className={styles.container}>
         <span>
-          {query && !submission && (isTyping || isLoading) ? (
+          {query && (isTyping || isLoading) ? (
             <SquareLoader size={16} color="white" />
           ) : (
             <IoIosSearch />
@@ -79,37 +82,57 @@ export default function AnimeInput() {
             setQuery(e.target.value)
           }}
         />
+
+        {data && data.anime.results.length !== 0 && !isTyping && !isLoading && (
+          <ul className={styles.choices}>
+            {data.anime.results.map((entry) => {
+              let {
+                id,
+                coverImage,
+                title: { romaji, english },
+              } = entry
+
+              if (!english && romaji) {
+                english = romaji
+                romaji = undefined
+              }
+
+              if (english === romaji) {
+                romaji = undefined
+              }
+
+              return (
+                <li
+                  key={id}
+                  tabIndex={0}
+                  onClick={() => {
+                    inputEl.current.value = english
+
+                    setSubmission(id)
+                    setQuery(null)
+                    setEffectiveQuery(null)
+                  }}
+                >
+                  <img src={coverImage.medium} alt="cover" />
+                  <p>
+                    <mark>{english}</mark> {romaji && ` • ${romaji}`}
+                  </p>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
 
-      {data && !isTyping && !isLoading && (
-        <ul className={styles.choices}>
-          {data.anime.results.map(entry => {
-            let {
-              id,
-              coverImage,
-              title: { romaji, english },
-            } = entry
+      <div className={styles.buttons}>
+        <a>
+          SKIP
+        </a>
 
-            if (!english && romaji) {
-              english = romaji
-              romaji = undefined
-            }
-
-            return (
-              <li key={id} tabIndex={0} onClick={() => {
-                setSubmission(id)
-                inputEl.current.value = english
-                setEffectiveQuery(null)
-              }}>
-                <img src={coverImage.medium} alt="cover" />
-                <p>
-                  <mark>{english}</mark> {romaji && ` • ${romaji}`}
-                </p>
-              </li>
-            )
-          })}
-        </ul>
-      )}
+        <a>
+          SUBMIT
+        </a>
+      </div>
     </>
   )
 }
