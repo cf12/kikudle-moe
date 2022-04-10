@@ -1,13 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { IoIosAddCircle, IoIosSearch } from "react-icons/io"
 import { request } from "graphql-request"
-import {
-  CircleLoader,
-  MoonLoader,
-  PulseLoader,
-  ScaleLoader,
-  SquareLoader,
-} from "react-spinners"
 import useSWRImmutable from "swr/immutable"
 
 import styles from "./AnimeInput.module.scss"
@@ -16,6 +9,7 @@ import GameContext from "contexts/GameContext"
 const fetcher = (query) => {
   if (!query) return {}
 
+  console.log('askdljaskd')
   return request(
     "https://graphql.anilist.co/",
     `
@@ -68,6 +62,7 @@ export default function AnimeInput() {
 
   useEffect(() => {
     setIsTyping(true)
+    setSubmission(null)
 
     const delayDebounceFn = setTimeout(() => {
       setIsTyping(false)
@@ -82,7 +77,7 @@ export default function AnimeInput() {
       <div className={styles.container}>
         <span>
           {query && (isTyping || isLoading) ? (
-            <SquareLoader size={16} color="white" />
+            <div className={styles.spinner} />
           ) : (
             <IoIosSearch />
           )}
@@ -96,7 +91,7 @@ export default function AnimeInput() {
           }}
         />
 
-        {data && data.anime.results.length !== 0 && !isTyping && !isLoading && (
+        {!submission && data && data.anime.results.length !== 0 && !isTyping && !isLoading && (
           <ul className={styles.choices}>
             {data.anime.results.map((entry) => {
               let title = entry.title
@@ -118,13 +113,12 @@ export default function AnimeInput() {
                     inputEl.current.value = title.english
 
                     setSubmission(entry)
-                    setQuery(null)
-                    setEffectiveQuery(null)
                   }}
                 >
                   <img src={entry.coverImage.medium} alt="cover" />
                   <p>
-                    <mark>{title.english}</mark> {title.romaji && ` • ${title.romaji}`}
+                    <mark>{title.english}</mark>{" "}
+                    {title.romaji && ` • ${title.romaji}`}
                   </p>
                 </li>
               )
@@ -134,17 +128,33 @@ export default function AnimeInput() {
       </div>
 
       <div className={styles.buttons}>
-        <a>SKIP</a>
-
-        <a
-          className={styles.submit}
+        <button
+          tabIndex={0}
           onClick={() => {
-            setAnswers((answers) => [...answers, submission])
-            setStage((stage) => stage + 1)
+            setStage(stage + 1)
+            setAnswers([...answers, null])
           }}
         >
+          SKIP
+        </button>
+
+        <button
+          className={styles.submit}
+          tabIndex={0}
+          onClick={() => {
+            inputEl.current.value = ""
+
+            setAnswers((answers) => [...answers, submission])
+            setStage((stage) => stage + 1)
+
+            setQuery(null)
+            setEffectiveQuery(null)
+            setSubmission(null)
+          }}
+          disabled={!submission}
+        >
           SUBMIT
-        </a>
+        </button>
       </div>
     </>
   )

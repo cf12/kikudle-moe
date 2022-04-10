@@ -3,4 +3,7 @@
 .main {
   margin: 0 auto;
   max-width: $maxWidth;
+
+  height: calc(100vh - 65px - 161px - 24px);
+  overflow-y: scroll;
 }

@@ -27,23 +27,34 @@ export default function Answers() {
             <td>—</td>
           </tr>
 
-          {
-            answers.map((answer, index) => { 
-              const title = answer.title
-              const ranking = answer.rankings.find(
-                ({ type, allTime }) => type === "POPULAR" && allTime
-              )?.rank
-
+          {answers.map((answer, index) => {
+            if (!answer) {
               return (
+                <tr>
+                  <td>SKIPPED</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+              )
+            }
+
+            const title = answer.title
+            const ranking = answer.rankings.find(
+              ({ type, allTime }) => type === "POPULAR" && allTime
+            )?.rank
+
+            return (
               <tr key={answer.id}>
                 <td>{title.english}</td>
                 <td>{`${answer.season} ${answer.seasonYear}`}</td>
-                <td>{ranking ? `#${ranking}` : '—'}</td>
+                <td>{ranking ? `#${ranking}` : "—"}</td>
                 <td>{Number(answer.popularity).toLocaleString()}</td>
                 <td>{answer.genres.join(", ")}</td>
               </tr>
-            )})
-          }
+            )
+          })}
         </tbody>
       </table>
     </div>

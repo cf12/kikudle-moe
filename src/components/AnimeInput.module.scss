@@ -105,17 +105,20 @@
 
   height: 48px;
 
-  & > a:first-child {
+  & > button:first-child {
     margin-right: auto;
   }
 
-  & > a {
+  & > button {
     padding: 12px 28px;
 
     border: 1px solid darken($dark1, 40%);
     background-color: rgba(white, 5%);
 
-    &:hover {
+    color: white;
+
+    &:hover:enabled,
+    &:active:enabled {
       cursor: pointer;
       user-select: none;
 
@@ -123,14 +126,39 @@
       background-color: rgba(white, 10%);
     }
 
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 60%;
+    }
+
     &.submit {
       border: 1px solid rgba(green, 40%);
       background-color: rgba(green, 5%);
 
-      &:hover {
+      &:hover:enabled,
+      &:active:enabled {
         border: 1px solid green;
         background-color: rgba(green, 25%);
       }
     }
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  background-color: white;
+
+  border-radius: 100%;
+  animation: sk-scaleout 1s infinite ease-in-out;
+}
+
+@keyframes sk-scaleout {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
   }
 }
