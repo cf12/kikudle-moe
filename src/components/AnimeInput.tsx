@@ -31,6 +31,16 @@ const fetcher = (query) => {
             coverImage {
               medium
             }
+            seasonYear
+            season
+            genres
+            popularity
+            rankings {
+              id,
+              rank
+              type,
+              allTime
+            }
           }
         }
       }
@@ -48,7 +58,7 @@ export default function AnimeInput() {
   const [effectiveQuery, setEffectiveQuery] = useState<String>(null)
   const [isTyping, setIsTyping] = useState<Boolean>(false)
 
-  const {stage, setStage} = useContext(GameContext)
+  const { stage, setStage, answers, setAnswers } = useContext(GameContext)
 
   const { data, error, isValidating } = useSWRImmutable(effectiveQuery, fetcher)
 
@@ -89,36 +99,32 @@ export default function AnimeInput() {
         {data && data.anime.results.length !== 0 && !isTyping && !isLoading && (
           <ul className={styles.choices}>
             {data.anime.results.map((entry) => {
-              let {
-                id,
-                coverImage,
-                title: { romaji, english },
-              } = entry
+              let title = entry.title
 
-              if (!english && romaji) {
-                english = romaji
-                romaji = undefined
+              if (!title.english && title.romaji) {
+                title.english = title.romaji
+                delete title.romaji
               }
 
-              if (english === romaji) {
-                romaji = undefined
+              if (title.english === title.romaji) {
+                delete title.romaji
               }
 
               return (
                 <li
-                  key={id}
+                  key={entry.id}
                   tabIndex={0}
                   onClick={() => {
-                    inputEl.current.value = english
+                    inputEl.current.value = title.english
 
-                    setSubmission(id)
+                    setSubmission(entry)
                     setQuery(null)
                     setEffectiveQuery(null)
                   }}
                 >
-                  <img src={coverImage.medium} alt="cover" />
+                  <img src={entry.coverImage.medium} alt="cover" />
                   <p>
-                    <mark>{english}</mark> {romaji && ` • ${romaji}`}
+                    <mark>{title.english}</mark> {title.romaji && ` • ${title.romaji}`}
                   </p>
                 </li>
               )
@@ -128,13 +134,15 @@ export default function AnimeInput() {
       </div>
 
       <div className={styles.buttons}>
-        <a>
-          SKIP
-        </a>
+        <a>SKIP</a>
 
-        <a className={styles.submit} onClick={() => {
-          setStage(stage => stage + 1)
-        }}>
+        <a
+          className={styles.submit}
+          onClick={() => {
+            setAnswers((answers) => [...answers, submission])
+            setStage((stage) => stage + 1)
+          }}
+        >
           SUBMIT
         </a>
       </div>

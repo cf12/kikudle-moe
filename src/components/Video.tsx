@@ -14,6 +14,7 @@ import { callbackify } from "util"
 // 4 - 35 seconds
 const MAX_DURATION = 35
 const BREAKPOINTS = [2, 5, 10, 20, 35]
+const BREAKPOINTS_OPACITY = [1, 0.9, 0.8, 0.7, 0.6]
 
 export default function Video() {
   const [playing, setPlaying] = useState(false)
@@ -21,11 +22,9 @@ export default function Video() {
   const videoEl = useRef()
   const progressEl = useRef()
 
-  const { stage } = useContext(GameContext)
+  const { stage, answer } = useContext(GameContext)
 
   const duration = BREAKPOINTS?.[stage]
-
-  console.log(duration)
 
   useEffect(() => {
     const video = videoEl.current
@@ -68,6 +67,9 @@ export default function Video() {
       <div className={styles.video}>
         <div
           className={styles.videoOverlay}
+          style={{
+            backgroundColor: `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`,
+          }}
           onClick={() => {
             setPlaying((playing) => !playing)
           }}
@@ -77,7 +79,7 @@ export default function Video() {
 
         <video
           id="video"
-          src="https://animethemes.moe/video/ShingekiNoKyojin-OP1.webm"
+          src={answer.video}
           ref={videoEl}
         />
       </div>

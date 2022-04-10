@@ -6,6 +6,7 @@ import Footer from "components/Footer"
 
 import styles from "./index.module.scss"
 import AnimeInput from "components/AnimeInput"
+import Answers from "components/Answers"
 
 const IndexPage: NextPage = () => {
   return (
@@ -14,6 +15,7 @@ const IndexPage: NextPage = () => {
 
       <main className={styles.main}>
         <Video />
+        <Answers />
       </main>
 
       <Footer />
