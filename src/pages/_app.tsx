@@ -6,7 +6,10 @@ import GameContext from 'contexts/GameContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GameContext.Provider>
+    <GameContext.Provider value={{
+      stage: 0,
+      setStage: () => {},
+    }}>
       <Component {...pageProps} />
     </GameContext.Provider>
   )

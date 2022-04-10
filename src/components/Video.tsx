@@ -1,12 +1,29 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { IoIosPause, IoIosPlay } from "react-icons/io"
 
-import styles from './Video.module.scss'
+import styles from "./Video.module.scss"
+
+import GameContext from "contexts/GameContext"
+import { callbackify } from "util"
+
+// Game stage:
+// 0 - 2 seconds
+// 1 - 5 seconds
+// 2 - 10 seconds
+// 3 - 20 seconds
+// 4 - 35 seconds
+const MAX_DURATION = 35
+const BREAKPOINTS = [2, 5, 10, 20, 35]
 
 export default function Video() {
+  const [playing, setPlaying] = useState(false)
+
   const videoEl = useRef()
   const progressEl = useRef()
-  const [playing, setPlaying] = useState(false)
+
+  const { stage } = useContext(GameContext)
+
+  const duration = BREAKPOINTS?.[stage]
 
   useEffect(() => {
     const video = videoEl.current
@@ -17,7 +34,12 @@ export default function Video() {
 
     const onPlay = () => {
       timer = setInterval(() => {
-        progress.value = Math.round((video.currentTime / video.duration) * 100)
+        progress.value = Math.round((video.currentTime / MAX_DURATION) * 10000)
+
+        if (video.currentTime >= duration) {
+          setPlaying(false)
+          video.currentTime = 0
+        }
       }, 10)
     }
 
@@ -32,7 +54,12 @@ export default function Video() {
       video.removeEventListener("play", onPlay)
       video.removeEventListener("pause", onPause)
     }
-  }, [videoEl, progressEl])
+  }, [videoEl, progressEl, duration])
+
+  useEffect(() => {
+    if (playing) videoEl.current.play()
+    else videoEl.current.pause()
+  }, [playing])
 
   return (
     <div className={styles.videoContainer}>
@@ -40,9 +67,6 @@ export default function Video() {
         <div
           className={styles.videoOverlay}
           onClick={() => {
-            if (playing) videoEl.current.pause()
-            else videoEl.current.play()
-
             setPlaying((playing) => !playing)
           }}
         >
@@ -55,9 +79,22 @@ export default function Video() {
           ref={videoEl}
         />
       </div>
-      <progress id="progress" max="100" value="0" ref={progressEl}>
-        Progress
-      </progress>
+
+      <div className={styles.progress}>
+        <progress id="progress" max="10000" value="0" ref={progressEl}>
+          Progress
+        </progress>
+
+        {BREAKPOINTS.slice(0, -1).map((duration, i) => (
+          <div
+            key={i}
+            className={styles.marker}
+            style={{
+              left: `calc(${(duration / MAX_DURATION) * 100}% + 1px)`,
+            }}
+          />
+        ))}
+      </div>
     </div>
   )
 }
