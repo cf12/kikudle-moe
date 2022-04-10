@@ -41,8 +41,8 @@ const parseRanking = (userAnswer, answer) => {
   let res = styles.correct
 
   if (!userRanking || !answerRanking) res = styles.none
-  else if (userAnswer.ranking < answer.ranking) res = styles.above
-  else if (userAnswer.ranking > answer.ranking) res = styles.above
+  else if (userRanking < answerRanking) res = styles.below
+  else if (userRanking > answerRanking) res = styles.above
 
   return <td className={res}>{displayRanking}</td>
 }
@@ -55,9 +55,26 @@ const parsePopularity = (userAnswer, answer) => {
 
   if (!userAnswer.popularity || !answer.popularity) res = styles.none
   if (userAnswer.popularity < answer.popularity) res = styles.above
-  else if (userAnswer.popularity > answer.popularity) res = styles.above
+  else if (userAnswer.popularity > answer.popularity) res = styles.below
 
   return <td className={res}>{displayPopularity}</td>
+}
+
+const parseGenres = (userAnswer, answer) => {
+  return (
+    <td className={styles.none}>
+      {userAnswer.genres
+        .map((genre) => {
+          if (answer.genres.includes(genre))
+            return (
+              <span key={genre} className={styles.correct}>
+                {genre}
+              </span>
+            )
+          else return <span key={genre}>{genre}</span>
+        }).reduce((a, b) => [a, ', ', b])}
+    </td>
+  )
 }
 
 export default function Answers() {
@@ -68,6 +85,7 @@ export default function Answers() {
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>Name</th>
             <th>Year</th>
             <th>Ranking</th>
@@ -91,13 +109,18 @@ export default function Answers() {
 
             return (
               <tr key={userAnswer.id}>
-                <td className={styles.marquee}>
+                <td className={userAnswer.id === answer.id ? styles.correct : ''}>
+                  <p>
+                    {index + 1}
+                  </p>
+                </td>
+                <td className={userAnswer.id === answer.id ? styles.correct : styles.none}>
                   <p>{userAnswer.title.english}</p>
                 </td>
                 {parseSeason(userAnswer, answer)}
                 {parseRanking(userAnswer, answer)}
                 {parsePopularity(userAnswer, answer)}
-                <td>{userAnswer.genres.join(", ")}</td>
+                {parseGenres(userAnswer, answer)}
               </tr>
             )
           })}

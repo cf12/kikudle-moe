@@ -9,6 +9,11 @@
   table {
     width: 100%;
 
+    td,
+    th {
+      padding: 12px;
+    }
+
     & > thead > tr {
       th {
         text-align: left;
@@ -16,7 +21,31 @@
     }
 
     & > tbody > tr {
-      .below, .above {
+      & > td:first-child {
+        width: 40px;
+        height: 40px;
+
+        & > p {
+          width: inherit;
+          height: inherit;
+
+          background-color: rgba(white, 15%);
+          border: 1px solid $dark1;
+
+          text-align: center;
+          line-height: 40px;
+        }
+
+        &.correct > p {
+          background-color: rgba(green, 25%);
+          border: 1px solid green;
+          color: white;
+        }
+      }
+
+      .below,
+      .above,
+      .incorrect {
         color: orange;
       }
 
@@ -29,11 +58,11 @@
       }
 
       .correct {
-        color: green;
+        color: limegreen;
       }
 
       .none {
-        color: gray;
+        color: rgba(white, 60%);
       }
 
       .marquee {
