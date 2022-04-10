@@ -1,7 +1,9 @@
-import Nav from 'components/Nav'
-import type { NextPage } from 'next'
+import type { NextPage } from "next"
 
-import styles from './index.module.scss'
+import Nav from "components/Nav"
+import Video from "components/Video"
+
+import styles from "./index.module.scss"
 
 const IndexPage: NextPage = () => {
   return (
@@ -9,7 +11,7 @@ const IndexPage: NextPage = () => {
       <Nav />
 
       <main className={styles.main}>
-
+        <Video />
       </main>
     </>
   )
