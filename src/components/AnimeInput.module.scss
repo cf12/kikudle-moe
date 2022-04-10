@@ -101,6 +101,8 @@
   display: flex;
   align-items: center;
 
+  margin-top: 16px;
+
   height: 48px;
 
   & > a:first-child {
@@ -108,6 +110,27 @@
   }
 
   & > a {
-    font-weight: 600;
+    padding: 12px 28px;
+
+    border: 1px solid darken($dark1, 40%);
+    background-color: rgba(white, 5%);
+
+    &:hover {
+      cursor: pointer;
+      user-select: none;
+
+      border: 1px solid $dark1;
+      background-color: rgba(white, 10%);
+    }
+
+    &.submit {
+      border: 1px solid rgba(green, 40%);
+      background-color: rgba(green, 5%);
+
+      &:hover {
+        border: 1px solid green;
+        background-color: rgba(green, 25%);
+      }
+    }
   }
 }

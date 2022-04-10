@@ -25,6 +25,8 @@ export default function Video() {
 
   const duration = BREAKPOINTS?.[stage]
 
+  console.log(duration)
+
   useEffect(() => {
     const video = videoEl.current
     const progress = progressEl.current
@@ -90,7 +92,7 @@ export default function Video() {
             key={i}
             className={styles.marker}
             style={{
-              left: `calc(${(duration / MAX_DURATION) * 100}% + 1px)`,
+              left: `${(duration / MAX_DURATION) * 100}%`,
             }}
           />
         ))}

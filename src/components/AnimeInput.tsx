@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { IoIosAddCircle, IoIosSearch } from "react-icons/io"
 import { request } from "graphql-request"
 import {
@@ -11,6 +11,7 @@ import {
 import useSWRImmutable from "swr/immutable"
 
 import styles from "./AnimeInput.module.scss"
+import GameContext from "contexts/GameContext"
 
 const fetcher = (query) => {
   if (!query) return {}
@@ -46,6 +47,8 @@ export default function AnimeInput() {
   const [submission, setSubmission] = useState<String>(null)
   const [effectiveQuery, setEffectiveQuery] = useState<String>(null)
   const [isTyping, setIsTyping] = useState<Boolean>(false)
+
+  const {stage, setStage} = useContext(GameContext)
 
   const { data, error, isValidating } = useSWRImmutable(effectiveQuery, fetcher)
 
@@ -129,7 +132,9 @@ export default function AnimeInput() {
           SKIP
         </a>
 
-        <a>
+        <a className={styles.submit} onClick={() => {
+          setStage(stage => stage + 1)
+        }}>
           SUBMIT
         </a>
       </div>
