@@ -4,6 +4,7 @@ import Nav from "components/Nav"
 import Video from "components/Video"
 
 import styles from "./index.module.scss"
+import AnimeInput from "components/AnimeInput"
 
 const IndexPage: NextPage = () => {
   return (
@@ -12,6 +13,8 @@ const IndexPage: NextPage = () => {
 
       <main className={styles.main}>
         <Video />
+
+        <AnimeInput />
       </main>
     </>
   )
