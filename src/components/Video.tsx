@@ -3,9 +3,8 @@ import { IoIosPause, IoIosPlay } from "react-icons/io"
 
 import styles from "./Video.module.scss"
 
-import GameContext from "contexts/GameContext"
-import { GameState } from "pages/_app"
 import { callbackify } from "util"
+import useStore, { GameState } from "hooks/useStore"
 
 // Game stage:
 // 0 - 2 seconds
@@ -23,7 +22,11 @@ export default function Video() {
   const videoEl = useRef()
   const progressEl = useRef()
 
-  const { stage, answer, gameState } = useContext(GameContext)
+  const solution = useStore((state) => state.solution)
+  const gameState = useStore((state) => state.gameState)
+  const answers = useStore((state) => state.answers)
+
+  const stage = answers.length
 
   const duration =
     gameState === GameState.PLAYING ? BREAKPOINTS?.[stage] : MAX_DURATION
@@ -86,7 +89,7 @@ export default function Video() {
           {playing ? <IoIosPause /> : <IoIosPlay />}
         </div>
 
-        <video id="video" src={answer?.video} ref={videoEl} />
+        <video id="video" src={solution?.video} ref={videoEl} />
       </div>
 
       <div className={styles.progress}>

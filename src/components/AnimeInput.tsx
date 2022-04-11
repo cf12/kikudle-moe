@@ -4,7 +4,7 @@ import { request } from "graphql-request"
 import useSWRImmutable from "swr/immutable"
 
 import styles from "./AnimeInput.module.scss"
-import GameContext from "contexts/GameContext"
+import useStore from "hooks/useStore"
 
 const fetcher = (query: string) => {
   if (!query) return {}
@@ -51,7 +51,7 @@ export default function AnimeInput() {
   const [effectiveQuery, setEffectiveQuery] = useState<String | null>(null)
   const [isTyping, setIsTyping] = useState<Boolean>(false)
 
-  const { stage, setStage, answers, setAnswers } = useContext(GameContext)
+  const submit = useStore((store) => store.submit)
 
   const { data, error, isValidating } = useSWRImmutable(effectiveQuery, fetcher)
 
@@ -90,48 +90,51 @@ export default function AnimeInput() {
           }}
         />
 
-        {!submission && data && data.anime.results.length !== 0 && !isTyping && !isLoading && (
-          <ul className={styles.choices}>
-            {data.anime.results.map((entry) => {
-              let title = entry.title
+        {!submission &&
+          data &&
+          data.anime.results.length !== 0 &&
+          !isTyping &&
+          !isLoading && (
+            <ul className={styles.choices}>
+              {data.anime.results.map((entry) => {
+                let title = entry.title
 
-              if (!title.english && title.romaji) {
-                title.english = title.romaji
-                delete title.romaji
-              }
+                if (!title.english && title.romaji) {
+                  title.english = title.romaji
+                  delete title.romaji
+                }
 
-              if (title.english === title.romaji) {
-                delete title.romaji
-              }
+                if (title.english === title.romaji) {
+                  delete title.romaji
+                }
 
-              return (
-                <li
-                  key={entry.id}
-                  tabIndex={0}
-                  onClick={() => {
-                    inputEl.current.value = title.english
+                return (
+                  <li
+                    key={entry.id}
+                    tabIndex={0}
+                    onClick={() => {
+                      inputEl.current.value = title.english
 
-                    setSubmission(entry)
-                  }}
-                >
-                  <img src={entry.coverImage.medium} alt="cover" />
-                  <p>
-                    <mark>{title.english}</mark>{" "}
-                    {title.romaji && ` • ${title.romaji}`}
-                  </p>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+                      setSubmission(entry)
+                    }}
+                  >
+                    <img src={entry.coverImage.medium} alt="cover" />
+                    <p>
+                      <mark>{title.english}</mark>{" "}
+                      {title.romaji && ` • ${title.romaji}`}
+                    </p>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
       </div>
 
       <div className={styles.buttons}>
         <button
           tabIndex={0}
           onClick={() => {
-            setStage(stage + 1)
-            setAnswers([...answers, null])
+            submit(null)
           }}
         >
           SKIP
@@ -143,8 +146,7 @@ export default function AnimeInput() {
           onClick={() => {
             inputEl.current.value = ""
 
-            setAnswers((answers) => [...answers, submission])
-            setStage((stage) => stage + 1)
+            submit(submission)
 
             setQuery(null)
             setEffectiveQuery(null)

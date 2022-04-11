@@ -3,14 +3,14 @@ import styles from "./Footer.module.scss"
 
 import AnimeInput from "./AnimeInput"
 
-import GameContext from "contexts/GameContext"
-
-import { GameState } from "pages/_app"
+import useStore, { GameState } from "hooks/useStore"
 
 export default function Footer() {
-  const { gameState, answer, answers } = useContext(GameContext)
+  const answers = useStore((state) => state.answers)
+  const solution = useStore((state) => state.solution)
+  const gameState = useStore((state) => state.gameState)
 
-  if (!answer) return undefined
+  if (!solution) return undefined
   else if (gameState === GameState.PLAYING)
     return (
       <footer className={styles.container}>
@@ -27,7 +27,7 @@ export default function Footer() {
 
           <p>
             You found today&apos;s anime in <bold>{answers.length}</bold> tries:{" "}
-            <a href={`https://anilist.co/anime/${answer.id}`}>{answer.title.english}</a>
+            <a href={`https://anilist.co/anime/${solution.id}`}>{solution.title.english}</a>
           </p>
         </div>
       </footer>
@@ -40,7 +40,7 @@ export default function Footer() {
 
           <p>
             Today&apos;s anime was:{" "}
-            <a href={`https://anilist.co/anime/${answer.id}`}>{answer.title.english}</a>
+            <a href={`https://anilist.co/anime/${solution.id}`}>{solution.title.english}</a>
           </p>
         </div>
       </footer>

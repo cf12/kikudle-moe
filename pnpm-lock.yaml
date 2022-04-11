@@ -16,6 +16,7 @@ specifiers:
   sass: ^1.50.0
   swr: ^1.2.2
   typescript: 4.6.3
+  zustand: ^3.7.2
 
 dependencies:
   graphql: 16.3.0
@@ -26,6 +27,7 @@ dependencies:
   react-dom: 18.0.0_react@18.0.0
   react-icons: 4.3.1_react@18.0.0
   swr: 1.2.2_react@18.0.0
+  zustand: 3.7.2_react@18.0.0
 
 devDependencies:
   '@types/node': 17.0.23
@@ -1955,3 +1957,15 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=}
     dev: true
+
+  /zustand/3.7.2_react@18.0.0:
+    resolution: {integrity: sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      react: '>=16.8'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.0.0
+    dev: false

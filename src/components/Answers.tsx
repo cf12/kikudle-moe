@@ -1,8 +1,7 @@
+import useStore, { GameState } from "hooks/useStore"
 import { useContext, useEffect, useRef, useState } from "react"
 
 import styles from "./Answers.module.scss"
-
-import GameContext from "contexts/GameContext"
 
 const parseSeason = (userAnswer, answer) => {
   const userSeasonDate = new Date(
@@ -29,11 +28,11 @@ const parseSeason = (userAnswer, answer) => {
   return <td className={res}>{displaySeason}</td>
 }
 
-const parseRanking = (userAnswer, answer) => {
-  const userRanking = userAnswer.rankings.find(
+const parseRanking = (answer, solution) => {
+  const userRanking = answer.rankings.find(
     ({ type, allTime }) => type === "POPULAR" && allTime
   )?.rank
-  const answerRanking = answer.rankings.find(
+  const answerRanking = solution.rankings.find(
     ({ type, allTime }) => type === "POPULAR" && allTime
   )?.rank
   const displayRanking = userRanking ? `#${userRanking}` : "—"
@@ -47,38 +46,41 @@ const parseRanking = (userAnswer, answer) => {
   return <td className={res}>{displayRanking}</td>
 }
 
-const parsePopularity = (userAnswer, answer) => {
-  const displayPopularity = userAnswer.popularity
-    ? Number(userAnswer.popularity).toLocaleString()
+const parsePopularity = (answer, solution) => {
+  const displayPopularity = answer.popularity
+    ? Number(answer.popularity).toLocaleString()
     : "—"
   let res = styles.correct
 
-  if (!userAnswer.popularity || !answer.popularity) res = styles.none
-  if (userAnswer.popularity < answer.popularity) res = styles.above
-  else if (userAnswer.popularity > answer.popularity) res = styles.below
+  if (!answer.popularity || !solution.popularity) res = styles.none
+  if (answer.popularity < solution.popularity) res = styles.above
+  else if (answer.popularity > solution.popularity) res = styles.below
 
   return <td className={res}>{displayPopularity}</td>
 }
 
-const parseGenres = (userAnswer, answer) => {
+const parseGenres = (answer, solution) => {
   return (
     <td className={styles.none}>
-      {userAnswer.genres
+      {answer.genres
         .map((genre) => {
-          if (answer.genres.includes(genre))
+          if (solution.genres.includes(genre))
             return (
               <span key={genre} className={styles.correct}>
                 {genre}
               </span>
             )
           else return <span key={genre}>{genre}</span>
-        }).reduce((a, b) => [a, ', ', b])}
+        })
+        .reduce((a, b) => [a, ", ", b])}
     </td>
   )
 }
 
 export default function Answers() {
-  const { answers, answer } = useContext(GameContext)
+  const answers = useStore((state) => state.answers)
+  const solution = useStore((state) => state.solution)
+  const gameState = useStore((state) => state.gameState)
 
   return (
     <div className={styles.container}>
@@ -94,8 +96,8 @@ export default function Answers() {
           </tr>
         </thead>
         <tbody>
-          {answers.map((userAnswer, index) => {
-            if (!userAnswer) {
+          {answers.map((answer, index) => {
+            if (!answer) {
               return (
                 <tr>
                   <td>SKIPPED</td>
@@ -107,20 +109,20 @@ export default function Answers() {
               )
             }
 
+            const isCorrect = answer.id === solution.id
+
             return (
-              <tr key={userAnswer.id}>
-                <td className={userAnswer.id === answer.id ? styles.correct : ''}>
-                  <p>
-                    {index + 1}
-                  </p>
+              <tr key={answer.id}>
+                <td className={isCorrect ? styles.correct : ""}>
+                  <p>{index + 1}</p>
                 </td>
-                <td className={userAnswer.id === answer.id ? styles.correct : styles.none}>
-                  <p>{userAnswer.title.english}</p>
+                <td className={isCorrect ? styles.correct : styles.none}>
+                  <p>{answer.title.english}</p>
                 </td>
-                {parseSeason(userAnswer, answer)}
-                {parseRanking(userAnswer, answer)}
-                {parsePopularity(userAnswer, answer)}
-                {parseGenres(userAnswer, answer)}
+                {parseSeason(answer, solution)}
+                {parseRanking(answer, solution)}
+                {parsePopularity(answer, solution)}
+                {parseGenres(answer, solution)}
               </tr>
             )
           })}

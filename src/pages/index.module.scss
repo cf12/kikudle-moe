@@ -8,24 +8,24 @@
   overflow-y: scroll;
 }
 
-.mainPreview {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+// .mainPreview {
+//   height: 100vh;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: column;
 
-  video {
-    width: 500px;
-    margin-bottom: 32px;
-  }
+//   video {
+//     width: 500px;
+//     margin-bottom: 32px;
+//   }
 
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 12px;
-  }
+//   h1 {
+//     font-size: 3rem;
+//     margin-bottom: 12px;
+//   }
   
-  p {
-    color: $dark1;
-  }
-}
+//   p {
+//     color: $dark1;
+//   }
+// }
