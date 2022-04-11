@@ -21,7 +21,7 @@ const IndexPage: NextPage = () => {
       <Footer /> */}
 
       <main className={styles.mainPreview}>
-        <video src="https://giant.gfycat.com/LittleShadowyEidolonhelvum.mp4" autoPlay="autoplay" loop />
+        <video src="https://giant.gfycat.com/LittleShadowyEidolonhelvum.mp4" autoPlay="autoplay" loop muted />
         <h1>Kikudle — ヒ•ア•dle</h1>
         <p>
           The daily anime wordle game! (Coming soon...)
