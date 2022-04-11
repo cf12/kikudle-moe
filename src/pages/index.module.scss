@@ -7,3 +7,25 @@
   height: calc(100vh - 65px - 161px - 24px);
   overflow-y: scroll;
 }
+
+.mainPreview {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  video {
+    width: 500px;
+    margin-bottom: 32px;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 12px;
+  }
+  
+  p {
+    color: $dark1;
+  }
+}

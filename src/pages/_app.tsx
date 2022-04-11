@@ -28,54 +28,51 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     setAnswer({
-      video: "https://animethemes.moe/video/NeonGenesisEvangelion-OP1.webm",
-      id: 30,
-      title: {
-        romaji: "Shin Seiki Evangelion",
-        english: "Neon Genesis Evangelion",
-        native: "新世紀エヴァンゲリオン",
+      "video": "https://animethemes.moe/video/ShingekiNoKyojinS4-OP1-NCBD1080.webm",
+      "id": 110277,
+      "title": {
+        "romaji": "Shingeki no Kyojin: The Final Season",
+        "english": "Attack on Titan Final Season",
+        "native": "進撃の巨人 The Final Season"
       },
-      coverImage: {
-        medium:
-          "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx30-1Ro1NFFg28bu.jpg",
+      "coverImage": {
+        "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110277-qDRIhu50PXzz.jpg"
       },
-      seasonYear: 1995,
-      season: "FALL",
-      genres: [
+      "seasonYear": 2021,
+      "season": "WINTER",
+      "genres": [
         "Action",
         "Drama",
-        "Mecha",
-        "Mystery",
-        "Psychological",
-        "Sci-Fi",
+        "Fantasy",
+        "Mystery"
       ],
-      popularity: 247726,
-      rankings: [
+      "averageScore": 88,
+      "rankings": [
         {
-          id: 97,
-          rank: 97,
-          type: "RATED",
-          allTime: true,
+          "rank": 13,
+          "type": "RATED",
+          "format": "TV",
+          "allTime": true
         },
         {
-          id: 552,
-          rank: 52,
-          type: "POPULAR",
-          allTime: true,
+          "rank": 21,
+          "type": "POPULAR",
+          "format": "TV",
+          "allTime": true
         },
         {
-          id: 1236,
-          rank: 1,
-          type: "RATED",
-          allTime: false,
+          "rank": 1,
+          "type": "RATED",
+          "format": "TV",
+          "allTime": false
         },
         {
-          id: 1264,
-          rank: 1,
-          type: "POPULAR",
-          allTime: false,
-        },
-      ],
+          "rank": 2,
+          "type": "POPULAR",
+          "format": "TV",
+          "allTime": false
+        }
+      ]
     })
   }, [])
 
