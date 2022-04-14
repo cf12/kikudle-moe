@@ -32,6 +32,8 @@
       color: white;
       font-size: 6rem;
 
+      transition: background-color 200ms ease, filter 200ms ease;
+
       &:hover {
         cursor: pointer;
       }
@@ -90,7 +92,6 @@
     }
   }
 }
-
 
 .spinner {
   width: 64px;
