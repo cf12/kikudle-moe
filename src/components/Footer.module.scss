@@ -16,7 +16,18 @@
   border-top: 1px solid $dark1;
   padding: 24px 0 24px 0;
 
-  box-shadow: 0 0 8px rgba($dark1, 75%);
+  // box-shadow: 0 0 8px rgba($dark1, 75%);
+
+  $patternPrimary: rgba(white, 5%);
+
+  background-size: 20px 20px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    $patternPrimary 0,
+    $patternPrimary 1px,
+    transparent 0,
+    transparent 50%
+  );
 
   .containerInner {
     margin: 0 auto;

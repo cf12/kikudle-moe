@@ -131,31 +131,35 @@ export default function AnimeInput() {
       </div>
 
       <div className={styles.buttons}>
-        <button
-          tabIndex={0}
-          onClick={() => {
-            submit(null)
-          }}
-        >
-          SKIP
-        </button>
+        <div className={styles.buttonContainer}>
+          <button
+            tabIndex={0}
+            onClick={() => {
+              submit(null)
+            }}
+          >
+            SKIP
+          </button>
+        </div>
 
-        <button
-          className={styles.submit}
-          tabIndex={0}
-          onClick={() => {
-            inputEl.current.value = ""
+        <div className={styles.buttonContainer}>
+          <button
+            className={styles.submit}
+            tabIndex={0}
+            onClick={() => {
+              inputEl.current.value = ""
 
-            submit(submission)
+              submit(submission)
 
-            setQuery(null)
-            setEffectiveQuery(null)
-            setSubmission(null)
-          }}
-          disabled={!submission}
-        >
-          SUBMIT
-        </button>
+              setQuery(null)
+              setEffectiveQuery(null)
+              setSubmission(null)
+            }}
+            disabled={!submission}
+          >
+            SUBMIT
+          </button>
+        </div>
       </div>
     </>
   )

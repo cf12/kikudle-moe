@@ -92,6 +92,19 @@ export default function Answers() {
   const solution = useStore((state) => state.solution)
   const gameState = useStore((state) => state.gameState)
 
+  if (!answers.length) {
+    return (
+      <div className={styles.container}>
+        <p>
+          <i>
+            You haven&apos;t made any guesses yet! To begin, play the clip from
+            above and guess what anime it&apos;s from.
+          </i>
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.container}>
       <table>

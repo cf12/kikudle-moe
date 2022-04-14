@@ -12,6 +12,8 @@
   display: flex;
   align-items: center;
 
+  background-color: $bg;
+
   &:focus-within {
     border: 1px solid $dark1;
 
@@ -22,7 +24,7 @@
 
   & > span {
     font-size: 1.25rem;
-    color: darken($dark1, 40%);
+    color: $dark2;
     width: 32px;
 
     display: flex;
@@ -112,42 +114,47 @@
   height: 48px;
   margin-top: 16px;
 
-  & > button:first-child {
+  .buttonContainer:first-child {
     margin-right: auto;
   }
 
-  & > button {
-    padding: 12px 28px;
+  .buttonContainer {
+    background-color: $bg;
 
-    border: 1px solid darken($dark1, 40%);
-    background-color: rgba(white, 5%);
+    & > button {
+      padding: 12px 28px;
 
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 800;
-    color: white;
+      border: 1px solid darken($dark1, 40%);
+      background-color: rgba(white, 5%);
 
-    &:hover:enabled,
-    &:active:enabled {
-      cursor: pointer;
-      user-select: none;
-
-      border: 1px solid $dark1;
-      background-color: rgba(white, 10%);
-    }
-
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 60%;
-    }
-
-    &.submit {
-      border: 1px solid rgba(green, 40%);
-      background-color: rgba(green, 5%);
+      font-family: "Noto Sans JP", sans-serif;
+      font-weight: 800;
+      color: $dark1;
 
       &:hover:enabled,
       &:active:enabled {
-        border: 1px solid green;
-        background-color: rgba(green, 25%);
+        cursor: pointer;
+        user-select: none;
+
+        border: 1px solid $dark1;
+        color: white;
+        background-color: rgba(white, 10%);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 60%;
+      }
+
+      &.submit {
+        border: 1px solid rgba(green, 40%);
+        background-color: rgba(green, 5%);
+
+        &:hover:enabled,
+        &:active:enabled {
+          border: 1px solid green;
+          background-color: rgba(green, 25%);
+        }
       }
     }
   }
