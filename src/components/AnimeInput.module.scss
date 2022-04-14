@@ -6,15 +6,23 @@
   width: 100%;
 
   box-sizing: border-box;
-  border: 1px solid $dark1;
+  border: 1px solid darken($dark1, 40%);
   padding: 10px 10px;
 
   display: flex;
   align-items: center;
 
+  &:focus-within {
+    border: 1px solid $dark1;
+
+    & > span {
+      color: white;
+    }
+  }
+
   & > span {
     font-size: 1.25rem;
-    color: white;
+    color: darken($dark1, 40%);
     width: 32px;
 
     display: flex;

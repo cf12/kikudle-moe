@@ -60,21 +60,31 @@ const parsePopularity = (answer, solution) => {
 }
 
 const parseGenres = (answer, solution) => {
-  return (
-    <td className={styles.none}>
-      {answer.genres
-        .map((genre) => {
-          if (solution.genres.includes(genre))
-            return (
-              <span key={genre} className={styles.correct}>
-                {genre}
-              </span>
-            )
-          else return <span key={genre}>{genre}</span>
-        })
-        .reduce((a, b) => [a, ", ", b])}
-    </td>
-  )
+  let res
+
+  if (answer.genres.length === 0) {
+    res = "—"
+  } else if (answer.genres.length === 1) {
+    res = (
+      <span key={genre} className={styles.correct}>
+        {genre[0]}
+      </span>
+    )
+  } else {
+    res = answer.genres
+      .map((genre) => {
+        if (solution.genres.includes(genre))
+          return (
+            <span key={genre} className={styles.correct}>
+              {genre}
+            </span>
+          )
+        else return <span key={genre}>{genre}</span>
+      })
+      .reduce((a, b) => [a, ", ", b])
+  }
+
+  return <td className={styles.none}>{res}</td>
 }
 
 export default function Answers() {
@@ -100,6 +110,9 @@ export default function Answers() {
             if (!answer) {
               return (
                 <tr>
+                  <td>
+                    <p>{index + 1}</p>
+                  </td>
                   <td>SKIPPED</td>
                   <td>—</td>
                   <td>—</td>

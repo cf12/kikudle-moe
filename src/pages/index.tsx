@@ -14,8 +14,10 @@ const IndexPage: NextPage = () => {
       <Nav />
 
       <main className={styles.main}>
-        <Video />
-        <Answers />
+        <div className={styles.mainContainer}>
+          <Video />
+          <Answers />
+        </div>
       </main>
 
       <Footer />

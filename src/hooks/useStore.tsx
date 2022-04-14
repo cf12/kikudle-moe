@@ -72,13 +72,13 @@ const useStore = create(
       },
 
       submit: (answer) => {
+        set((state) => ({
+          answers: [...state.answers, answer],
+        }))
+
         const { solution, answers } = get()
 
-        set({
-          answers: [...answers, answer],
-        })
-
-        if (answer.id === solution.id) {
+        if (answer && answer.id === solution.id) {
           set({
             gameState: GameState.WIN,
           })
@@ -90,8 +90,7 @@ const useStore = create(
       },
     }),
     {
-      name: "kikudle-store",
-      getStorage: () => localStorage,
+      name: "kikudle-store"
     }
   )
 )

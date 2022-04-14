@@ -5,6 +5,7 @@ import styles from "./Video.module.scss"
 
 import { callbackify } from "util"
 import useStore, { GameState } from "hooks/useStore"
+import ReactPlayer from "react-player/file"
 
 // Game stage:
 // 0 - 2 seconds
@@ -14,13 +15,15 @@ import useStore, { GameState } from "hooks/useStore"
 // 4 - 35 seconds
 const MAX_DURATION = 35
 const BREAKPOINTS = [2, 5, 10, 20, 35]
-const BREAKPOINTS_OPACITY = [1, 0.9, 0.8, 0.7, 0.6]
+const BREAKPOINTS_OPACITY = [1, 0.85, 0.7, 0.55, 0.4]
 
 export default function Video() {
   const [playing, setPlaying] = useState(false)
+  const [ready, setReady] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [done, setDone] = useState(false)
 
   const videoEl = useRef()
-  const progressEl = useRef()
 
   const solution = useStore((state) => state.solution)
   const gameState = useStore((state) => state.gameState)
@@ -31,71 +34,91 @@ export default function Video() {
   const duration =
     gameState === GameState.PLAYING ? BREAKPOINTS?.[stage] : MAX_DURATION
 
-  useEffect(() => {
-    const video = videoEl.current
-    const progress = progressEl.current
-    if (!video || !progress) return
-
-    let timer
-
-    const onPlay = () => {
-      timer = setInterval(() => {
-        progress.value = Math.round((video.currentTime / MAX_DURATION) * 10000)
-
-        if (video.currentTime >= duration) {
-          setPlaying(false)
-          video.currentTime = 0
-        }
-      }, 10)
-    }
-
-    const onPause = () => {
-      clearInterval(timer)
-    }
-
-    video.addEventListener("play", onPlay)
-    video.addEventListener("pause", onPause)
-
-    return () => {
-      video.removeEventListener("play", onPlay)
-      video.removeEventListener("pause", onPause)
-    }
-  }, [videoEl, progressEl, duration])
-
-  useEffect(() => {
-    if (playing) videoEl.current.play()
-    else videoEl.current.pause()
-  }, [playing])
+  // useEffect(() => {
+  //   if (playing) videoEl.current.play()
+  //   else videoEl.current.pause()
+  // }, [playing])
 
   return (
     <div className={styles.videoContainer}>
       <div className={styles.video}>
-        <div
-          className={styles.videoOverlay}
-          style={{
-            backgroundColor:
-              gameState === GameState.PLAYING
-                ? `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`
-                : "transparent",
-            backdropFilter: 
-              gameState === GameState.PLAYING
-                ? "blur(24px)"
-                : "none",
-          }}
-          onClick={() => {
-            setPlaying((playing) => !playing)
-          }}
-        >
-          {playing ? <IoIosPause /> : <IoIosPlay />}
-        </div>
+        {!ready ? (
+          <div className={styles.videoOverlayLoader}>
+            <div className={styles.spinner} />
+          </div>
+        ) : (
+          <div
+            className={styles.videoOverlay}
+            style={{
+              backgroundColor:
+                gameState === GameState.PLAYING
+                  ? `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`
+                  : "transparent",
+              backdropFilter:
+                gameState === GameState.PLAYING ? "blur(16px)" : "none",
+            }}
+            onClick={() => {
+              setPlaying((playing) => !playing)
+            }}
+          >
+            {playing ? <IoIosPause /> : <IoIosPlay />}
+          </div>
+        )}
 
-        <video id="video" src={solution?.video} ref={videoEl} />
+        <ReactPlayer
+          className={styles.player}
+          width="100%"
+          height="100%"
+          ref={videoEl}
+          pip={false}
+          url={solution?.video}
+          playing={playing}
+          progressInterval={10}
+          onProgress={({ playedSeconds }) => {
+            setProgress(playedSeconds / MAX_DURATION)
+
+            if (playedSeconds >= duration) {
+              setPlaying(false)
+              setDone(true)
+            }
+          }}
+          onPlay={() => {
+            if (done) {
+              setDone(false)
+              videoEl.current.seekTo(0)
+            }
+          }}
+          onReady={() => setReady(true)}
+        />
+
+        {/* <video
+          className={styles.player}
+          preload="auto"
+          src={solution?.video}
+          ref={videoEl}
+          onLoadedData={() => setReady(true)}
+          onTimeUpdate={(e) => {
+            const { currentTime } = e.target
+            setProgress(currentTime / MAX_DURATION)
+
+            if (currentTime >= duration) {
+              setPlaying(false)
+              setDone(true)
+            }
+          }}
+
+          onPlay={() => {
+            if (done) {
+              setDone(false)
+              // setReady(false)
+              videoEl.current.currentTime = 0
+            }
+          }}
+        /> */}
       </div>
 
       <div className={styles.progress}>
-        <progress id="progress" max="10000" value="0" ref={progressEl}>
-          Progress
-        </progress>
+        <progress max={1} value={progress} />
 
         {BREAKPOINTS.slice(0, -1).map((duration, i) => (
           <div

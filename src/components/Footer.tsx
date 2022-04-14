@@ -26,8 +26,11 @@ export default function Footer() {
           <h1>Congratulations!</h1>
 
           <p>
-            You found today&apos;s anime in <bold>{answers.length}</bold> tries:{" "}
-            <a href={`https://anilist.co/anime/${solution.id}`}>{solution.title.english}</a>
+            You found today&apos;s anime in <bold>{answers.length}</bold>{" "}
+            {answers.length === 1 ? "try" : "tries"}:{" "}
+            <a href={`https://anilist.co/anime/${solution.id}`}>
+              {solution.title.english}
+            </a>
           </p>
         </div>
       </footer>
@@ -40,7 +43,9 @@ export default function Footer() {
 
           <p>
             Today&apos;s anime was:{" "}
-            <a href={`https://anilist.co/anime/${solution.id}`}>{solution.title.english}</a>
+            <a href={`https://anilist.co/anime/${solution.id}`}>
+              {solution.title.english}
+            </a>
           </p>
         </div>
       </footer>
