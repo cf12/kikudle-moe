@@ -44,7 +44,7 @@ function shuffle(array: any[]) {
   for (let i = 1; i <= NUM_PAGES; i++) {
     const res = await client.request(gql`
       {
-        Page(page: ${i}, perPage: 100) {
+        Page(page: ${i}, perPage: 50) {
           media(type: ANIME, sort: POPULARITY_DESC, isAdult: false) {
             id
             idMal
