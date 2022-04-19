@@ -26,7 +26,7 @@ export default function Footer() {
           <h1>Congratulations!</h1>
 
           <p>
-            You found today&apos;s anime in <bold>{answers.length}</bold>{" "}
+            You found today&apos;s anime in <strong>{answers.length}</strong>{" "}
             {answers.length === 1 ? "try" : "tries"}:{" "}
             <a href={`https://anilist.co/anime/${solution.id}`}>
               {solution.title.english}

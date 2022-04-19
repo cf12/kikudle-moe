@@ -1,3 +1,4 @@
+import request from "graphql-request"
 import create from "zustand"
 import { persist } from "zustand/middleware"
 
@@ -22,53 +23,39 @@ const useStore = create(
 
         if (solution) return
 
+        // TODO: Gamestate for no data / when this fails
+        const { url, anilist_id } = (await (await fetch("/api/today")).json())
+          .data
+        const anilistData = await request(
+          "https://graphql.anilist.co/",
+          `
+          {
+            Media(type: ANIME, id: ${anilist_id}) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              seasonYear
+              season
+              genres
+              popularity
+              rankings {
+                id
+                rank
+                type
+                allTime
+              }
+            }
+          }
+          `
+        )
+
         set({
-          solution: {
-            video:
-              "https://animethemes.moe/video/ShingekiNoKyojinS4-OP1-NCBD1080.webm",
-            id: 110277,
-            title: {
-              romaji: "Shingeki no Kyojin: The Final Season",
-              english: "Attack on Titan Final Season",
-              native: "進撃の巨人 The Final Season",
-            },
-            coverImage: {
-              medium:
-                "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110277-qDRIhu50PXzz.jpg",
-            },
-            seasonYear: 2021,
-            season: "WINTER",
-            genres: ["Action", "Drama", "Fantasy", "Mystery"],
-            averageScore: 88,
-            rankings: [
-              {
-                rank: 13,
-                type: "RATED",
-                format: "TV",
-                allTime: true,
-              },
-              {
-                rank: 21,
-                type: "POPULAR",
-                format: "TV",
-                allTime: true,
-              },
-              {
-                rank: 1,
-                type: "RATED",
-                format: "TV",
-                allTime: false,
-              },
-              {
-                rank: 2,
-                type: "POPULAR",
-                format: "TV",
-                allTime: false,
-              },
-            ],
-          },
+          solution: { ...anilistData.Media, video: url },
+          gameState: GameState.PLAYING,
         })
-        set({ gameState: GameState.PLAYING })
       },
 
       submit: (answer) => {
@@ -90,7 +77,7 @@ const useStore = create(
       },
     }),
     {
-      name: "kikudle-store"
+      name: "kikudle-store",
     }
   )
 )
