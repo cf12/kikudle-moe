@@ -6,6 +6,7 @@ import styles from "./Video.module.scss"
 import { callbackify } from "util"
 import useStore, { GameState } from "hooks/useStore"
 import ReactPlayer from "react-player/file"
+import { FaPause, FaPlayCircle, FaRegPauseCircle, FaRegPlayCircle } from "react-icons/fa"
 
 // Game stage:
 // 0 - 2 seconds
@@ -61,7 +62,7 @@ export default function Video() {
               setPlaying((playing) => !playing)
             }}
           >
-            {playing ? <IoIosPause /> : <IoIosPlay />}
+            {playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
           </div>
         )}
 

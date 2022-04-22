@@ -39,7 +39,7 @@ export default function Footer() {
     return (
       <footer className={styles.container + " " + styles.containerLose}>
         <div className={styles.containerInner}>
-          <h1>Better luck tomorrow!</h1>
+          <h1>Better luck next time!</h1>
 
           <p>
             Today&apos;s anime was:{" "}
