@@ -4,7 +4,6 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <title>Kikudle - Wordle For Weebs!</title>
         <meta property="og:title" content="Kikudle - Wordle For Weebs!" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://kikudle.moe" />

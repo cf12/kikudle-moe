@@ -1,13 +1,29 @@
 @import "styles";
 
-.main {
+.container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: calc(100vh - 65px - 161px);
-  overflow-y: scroll;
+  height: 100vh;
 
-  .mainContainer {
-    margin: 0 auto;
-    max-width: $maxWidth;
+  & > nav {
+    flex-shrink: 0;
+  }
+
+  .main {
+    flex-grow: 1;
+
+    overflow-y: auto;
+    padding-bottom: 32px;
+
+    .mainContainer {
+      margin: 0 auto;
+      max-width: $maxWidth;
+    }
+  }
+
+  & > footer {
+    flex-shrink: 0;
   }
 }
 
@@ -27,7 +43,7 @@
 //     font-size: 3rem;
 //     margin-bottom: 12px;
 //   }
-  
+
 //   p {
 //     color: $dark1;
 //   }

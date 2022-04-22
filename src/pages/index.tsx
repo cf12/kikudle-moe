@@ -8,7 +8,11 @@ import styles from "./index.module.scss"
 
 const IndexPage: NextPage = () => {
   return (
-    <>
+    <div className={styles.container}>
+      <Head>
+        <title>Kikudle - Wordle For Weebs!</title>
+      </Head>
+
       <Nav />
 
       <main className={styles.main}>
@@ -27,7 +31,7 @@ const IndexPage: NextPage = () => {
           The daily anime wordle game! (Coming soon...)
         </p>
       </main> */}
-    </>
+    </div>
   )
 }
 
