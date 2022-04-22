@@ -84,6 +84,7 @@ export default function AnimeInput() {
 
         <input
           type="text"
+          placeholder="Search for an anime"
           ref={inputEl}
           onChange={(e) => {
             setQuery(e.target.value)

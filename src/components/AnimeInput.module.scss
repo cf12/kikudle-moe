@@ -42,6 +42,9 @@
     border: none;
 
     color: white;
+
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 500;
   }
 
   .choices {
@@ -58,7 +61,7 @@
     border: 1px solid $dark1;
 
     max-height: 200px;
-    overflow: scroll;
+    overflow-y: auto;
 
     & > li {
       display: flex;
@@ -74,10 +77,10 @@
       border-bottom: 1px solid $dark1;
 
       & > img {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-        min-height: 50px;
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        min-height: 56px;
         object-fit: cover;
         object-position: center;
 
@@ -85,7 +88,8 @@
       }
 
       & > p {
-        font-size: 0.85rem;
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 500;
         color: rgba(white, 60%);
 
         & > mark {
@@ -147,13 +151,13 @@
       }
 
       &.submit {
-        border: 1px solid rgba(green, 40%);
-        background-color: rgba(green, 5%);
+        border: 1px solid rgba(green, 75%);
+        background-color: rgba(green, 25%);
 
         &:hover:enabled,
         &:active:enabled {
           border: 1px solid green;
-          background-color: rgba(green, 25%);
+          background-color: rgba(green, 40%);
         }
       }
     }
