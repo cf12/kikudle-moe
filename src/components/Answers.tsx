@@ -184,7 +184,12 @@ export default function Answers() {
     <div className={styles.container}>
       {answers.map((answer, index) => {
         if (!answer) {
-          return <div className={styles.cardSkipped} />
+          return (
+            <div className={styles.cardSkipped}>
+              <h1 className={styles.number}>#{index + 1}</h1>
+              <h1>— SKIPPED —</h1>
+            </div>
+          )
         }
 
         const isCorrect = answer.id === solution.id

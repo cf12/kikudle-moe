@@ -21,6 +21,29 @@
     color: $dark1;
   }
 
+  .cardSkipped {
+    position: relative;
+    height: 250px;
+    padding: 24px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    background-color: $dark2;
+    border: 1px solid $dark1;
+
+    .number {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+
+      margin: 0;
+    }
+  }
+
   .card {
     min-height: 250px;
 
