@@ -185,7 +185,7 @@ export default function Answers() {
       {answers.map((answer, index) => {
         if (!answer) {
           return (
-            <div className={styles.cardSkipped}>
+            <div className={styles.cardSkipped} key={index}>
               <h1 className={styles.number}>#{index + 1}</h1>
               <h1>— SKIPPED —</h1>
             </div>
@@ -196,7 +196,7 @@ export default function Answers() {
 
         return (
           <div
-            key={answer.id}
+            key={index}
             className={styles.card + " " + (isCorrect ? styles.correct : "")}
           >
             <img src={answer.coverImage.medium} alt="" />

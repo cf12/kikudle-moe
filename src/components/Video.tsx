@@ -38,13 +38,7 @@ export default function Video() {
 
   const stage = answers.length
 
-  const duration =
-    gameState === GameState.PLAYING ? BREAKPOINTS?.[stage] : MAX_DURATION
-
-  // useEffect(() => {
-  //   if (playing) videoEl.current.play()
-  //   else videoEl.current.pause()
-  // }, [playing])
+  const duration = BREAKPOINTS?.[stage]
 
   return (
     <div className={styles.videoContainer}>
@@ -90,14 +84,18 @@ export default function Video() {
           onProgress={({ playedSeconds, played }) => {
             if (gameState !== GameState.PLAYING) {
               setProgress(played)
-              return
-            }
 
-            setProgress(playedSeconds / MAX_DURATION)
+              if (played >= 1) {
+                setPlaying(false)
+                setDone(true)
+              }
+            } else {
+              setProgress(playedSeconds / MAX_DURATION)
 
-            if (playedSeconds >= duration) {
-              setPlaying(false)
-              setDone(true)
+              if (playedSeconds >= duration) {
+                setPlaying(false)
+                setDone(true)
+              }
             }
           }}
           onPlay={() => {
@@ -108,46 +106,59 @@ export default function Video() {
           }}
           onReady={() => setReady(true)}
         />
-
-        {/* <video
-          className={styles.player}
-          preload="auto"
-          src={solution?.video}
-          ref={videoEl}
-          onLoadedData={() => setReady(true)}
-          onTimeUpdate={(e) => {
-            const { currentTime } = e.target
-            setProgress(currentTime / MAX_DURATION)
-
-            if (currentTime >= duration) {
-              setPlaying(false)
-              setDone(true)
-            }
-          }}
-
-          onPlay={() => {
-            if (done) {
-              setDone(false)
-              // setReady(false)
-              videoEl.current.currentTime = 0
-            }
-          }}
-        /> */}
       </div>
 
-      <div className={styles.progress}>
+      <div
+        className={styles.progress}
+        onClick={({ clientX, currentTarget }) => {
+          const { left, width } = currentTarget.getBoundingClientRect()
+          const progress = (clientX - left) / width
+
+          if (gameState === GameState.PLAYING) {
+            const newDuration = progress * MAX_DURATION
+
+            if (newDuration <= duration) {
+              videoEl.current.seekTo(newDuration, "seconds")
+
+              if (!playing) {
+                setPlaying(true)
+              }
+            }
+          } else {
+            videoEl.current.seekTo(progress, "fraction")
+
+            if (!playing) {
+              setPlaying(true)
+            }
+          }
+        }}
+      >
         <progress max={1} value={progress} />
 
-        {gameState === GameState.PLAYING &&
-          BREAKPOINTS.slice(0, -1).map((duration, i) => (
+        {gameState === GameState.PLAYING ? (
+          BREAKPOINTS.map((duration, i) => (
             <div
               key={i}
-              className={styles.marker}
+              className={
+                styles.marker + " " + (i === stage ? styles.active : "")
+              }
               style={{
-                left: `${(duration / MAX_DURATION) * 100}%`,
+                zIndex: i === stage ? 1 : 0,
+                width:
+                  i === BREAKPOINTS.length - 1
+                    ? "100%"
+                    : `calc(${(duration / MAX_DURATION) * 100}% + 1px)`,
               }}
             />
-          ))}
+          ))
+        ) : (
+          <div
+            className={styles.marker + " " + styles.active}
+            style={{
+              width: `100%`,
+            }}
+          />
+        )}
       </div>
     </div>
   )
