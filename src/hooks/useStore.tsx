@@ -47,6 +47,7 @@ const useStore = create(
                 type
                 allTime
               }
+              averageScore
             }
           }
           `

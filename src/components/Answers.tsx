@@ -1,9 +1,34 @@
-import useStore, { GameState } from "hooks/useStore"
-import { useContext, useEffect, useRef, useState } from "react"
-
+import useStore from "hooks/useStore"
+import {
+  FaArrowCircleDown,
+  FaArrowCircleUp,
+  FaCheckCircle,
+  FaHeart,
+  FaLeaf,
+  FaTrophy,
+  FaUsers,
+} from "react-icons/fa"
 import styles from "./Answers.module.scss"
 
-const parseSeason = (userAnswer, answer) => {
+const Tidbit = ({ style, subtitle, text, textIcon, icon }) => {
+  return (
+    <div className={styles.tidbit + " " + style}>
+      <div className={styles.text}>
+        <div className={styles.subtitle}>
+          <span>{icon}</span>
+          {subtitle}
+        </div>
+
+        <h3>
+          {text}
+          <span>{textIcon}</span>
+        </h3>
+      </div>
+    </div>
+  )
+}
+
+const displaySeason = (userAnswer, answer) => {
   const userSeasonDate = new Date(
     `${userAnswer.season} ${userAnswer.seasonYear}`
   )
@@ -13,22 +38,37 @@ const parseSeason = (userAnswer, answer) => {
       ? `${userAnswer.season} ${userAnswer.seasonYear}`
       : "—"
 
-  let res = styles.correct
+  let style = styles.correct
+  let icon = <FaCheckCircle />
 
   if (
     !userAnswer.season ||
     !userAnswer.seasonYear ||
     !answer.season ||
     !answer.seasonYear
-  )
-    res = styles.none
-  else if (userSeasonDate < answerSeasonDate) res = styles.above
-  else if (userSeasonDate > answerSeasonDate) res = styles.below
+  ) {
+    style = styles.none
+    icon = null
+  } else if (userSeasonDate < answerSeasonDate) {
+    style = styles.above
+    icon = <FaArrowCircleUp />
+  } else if (userSeasonDate > answerSeasonDate) {
+    icon = <FaArrowCircleDown />
+    style = styles.below
+  }
 
-  return <td className={res}>{displaySeason}</td>
+  return (
+    <Tidbit
+      icon={<FaLeaf />}
+      style={style}
+      subtitle="SEASON"
+      text={displaySeason}
+      textIcon={icon}
+    />
+  )
 }
 
-const parseRanking = (answer, solution) => {
+const displayRanking = (answer, solution) => {
   const userRanking = answer.rankings.find(
     ({ type, allTime }) => type === "POPULAR" && allTime
   )?.rank
@@ -37,54 +77,89 @@ const parseRanking = (answer, solution) => {
   )?.rank
   const displayRanking = userRanking ? `#${userRanking}` : "—"
 
-  let res = styles.correct
+  let style = styles.correct
+  let icon = <FaCheckCircle />
 
-  if (!userRanking || !answerRanking) res = styles.none
-  else if (userRanking < answerRanking) res = styles.below
-  else if (userRanking > answerRanking) res = styles.above
+  if (!userRanking || !answerRanking) {
+    style = styles.none
+    icon = null
+  } else if (userRanking < answerRanking) {
+    style = styles.below
+    icon = <FaArrowCircleDown />
+  } else if (userRanking > answerRanking) {
+    style = styles.above
+    icon = <FaArrowCircleUp />
+  }
 
-  return <td className={res}>{displayRanking}</td>
+  return (
+    <Tidbit
+      icon={<FaTrophy />}
+      style={style}
+      subtitle="RANKING"
+      text={displayRanking}
+      textIcon={icon}
+    />
+  )
 }
 
-const parsePopularity = (answer, solution) => {
+const displayPopularity = (answer, solution) => {
   const displayPopularity = answer.popularity
     ? Number(answer.popularity).toLocaleString()
     : "—"
-  let res = styles.correct
 
-  if (!answer.popularity || !solution.popularity) res = styles.none
-  if (answer.popularity < solution.popularity) res = styles.above
-  else if (answer.popularity > solution.popularity) res = styles.below
+  let style = styles.correct
+  let icon = <FaCheckCircle />
 
-  return <td className={res}>{displayPopularity}</td>
-}
-
-const parseGenres = (answer, solution) => {
-  let res
-
-  if (answer.genres.length === 0) {
-    res = "—"
-  } else if (answer.genres.length === 1) {
-    res = (
-      <span key={genre} className={styles.correct}>
-        {genre[0]}
-      </span>
-    )
-  } else {
-    res = answer.genres
-      .map((genre) => {
-        if (solution.genres.includes(genre))
-          return (
-            <span key={genre} className={styles.correct}>
-              {genre}
-            </span>
-          )
-        else return <span key={genre}>{genre}</span>
-      })
-      .reduce((a, b) => [a, ", ", b])
+  if (!answer.popularity || !solution.popularity) {
+    style = styles.none
+    icon = null
+  } else if (answer.popularity < solution.popularity) {
+    style = styles.above
+    icon = <FaArrowCircleUp />
+  } else if (answer.popularity > solution.popularity) {
+    style = styles.below
+    icon = <FaArrowCircleDown />
   }
 
-  return <td className={styles.none}>{res}</td>
+  return (
+    <Tidbit
+      icon={<FaUsers />}
+      style={style}
+      subtitle="POPULARITY"
+      text={displayPopularity}
+      textIcon={icon}
+    />
+  )
+}
+
+const displayAverageScore = (answer, solution) => {
+  const displayAverageScore = answer.averageScore
+    ? `${answer.averageScore}%`
+    : "—"
+
+  let style = styles.correct
+  let icon = <FaCheckCircle />
+
+  if (!answer.averageScore || !solution.averageScore) {
+    style = styles.none
+    icon = null
+  } else if (answer.averageScore < solution.averageScore) {
+    style = styles.above
+    icon = <FaArrowCircleUp />
+  } else if (answer.averageScore > solution.averageScore) {
+    style = styles.below
+    icon = <FaArrowCircleDown />
+  }
+
+  return (
+    <Tidbit
+      icon={<FaHeart />}
+      style={style}
+      subtitle="AVERAGE SCORE"
+      text={displayAverageScore}
+      textIcon={icon}
+    />
+  )
 }
 
 export default function Answers() {
@@ -107,7 +182,52 @@ export default function Answers() {
 
   return (
     <div className={styles.container}>
-      <table>
+      {answers.map((answer, index) => {
+        if (!answer) {
+          return <div className={styles.cardSkipped} />
+        }
+
+        const isCorrect = answer.id === solution.id
+
+        return (
+          <div
+            key={answer.id}
+            className={styles.card + " " + (isCorrect ? styles.correct : "")}
+          >
+            <img src={answer.coverImage.medium} alt="" />
+
+            <span>
+              <div className={styles.header}>
+                <a href={`https://anilist.co/anime/${answer.id}`}>
+                  <h1>{answer.title.english}</h1>
+                </a>
+                <h1>#{index + 1}</h1>
+              </div>
+
+              <div className={styles.genres}>
+                {answer.genres.map((genre) => (
+                  <span
+                    key={genre}
+                    className={
+                      solution.genres.includes(genre) ? styles.correct : ""
+                    }
+                  >
+                    {genre}
+                  </span>
+                ))}
+              </div>
+
+              <div className={styles.tidbits}>
+                {displaySeason(answer, solution)}
+                {displayRanking(answer, solution)}
+                {displayPopularity(answer, solution)}
+                {displayAverageScore(answer, solution)}
+              </div>
+            </span>
+          </div>
+        )
+      })}
+      {/* <table>
         <thead>
           <tr>
             <th></th>
@@ -153,7 +273,7 @@ export default function Answers() {
             )
           })}
         </tbody>
-      </table>
+      </table> */}
     </div>
   )
 }

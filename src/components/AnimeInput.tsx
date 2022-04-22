@@ -34,6 +34,7 @@ const fetcher = (query: string) => {
               type,
               allTime
             }
+            averageScore
           }
         }
       }
