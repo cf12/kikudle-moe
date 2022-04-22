@@ -6,7 +6,13 @@ import styles from "./Video.module.scss"
 import { callbackify } from "util"
 import useStore, { GameState } from "hooks/useStore"
 import ReactPlayer from "react-player/file"
-import { FaPause, FaPlayCircle, FaRegPauseCircle, FaRegPlayCircle } from "react-icons/fa"
+import {
+  FaPause,
+  FaPlay,
+  FaPlayCircle,
+  FaRegPauseCircle,
+  FaRegPlayCircle,
+} from "react-icons/fa"
 
 // Game stage:
 // 0 - 2 seconds
@@ -49,22 +55,28 @@ export default function Video() {
           </div>
         ) : (
           <div
-            className={styles.videoOverlay}
-            style={{
-              backgroundColor:
-                gameState === GameState.PLAYING
-                  ? `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`
-                  : "transparent",
-              backdropFilter:
-                gameState === GameState.PLAYING ? "blur(16px)" : "none",
-            }}
+            className={
+              styles.videoOverlay + " " + (!playing ? styles.active : "")
+            }
             onClick={() => {
               setPlaying((playing) => !playing)
             }}
           >
-            {playing ? <FaRegPauseCircle /> : <FaRegPlayCircle />}
+            {playing ? <IoIosPause /> : <IoIosPlay />}
           </div>
         )}
+
+        <div
+          style={{
+            backgroundColor:
+              gameState === GameState.PLAYING
+                ? `rgba(0, 0, 0, ${BREAKPOINTS_OPACITY[stage]})`
+                : "transparent",
+            backdropFilter:
+              gameState === GameState.PLAYING ? "blur(16px)" : "none",
+          }}
+          className={styles.videoHider}
+        />
 
         <ReactPlayer
           className={styles.player}
@@ -75,7 +87,12 @@ export default function Video() {
           url={solution?.video}
           playing={playing}
           progressInterval={10}
-          onProgress={({ playedSeconds }) => {
+          onProgress={({ playedSeconds, played }) => {
+            if (gameState !== GameState.PLAYING) {
+              setProgress(played)
+              return
+            }
+
             setProgress(playedSeconds / MAX_DURATION)
 
             if (playedSeconds >= duration) {
@@ -121,15 +138,16 @@ export default function Video() {
       <div className={styles.progress}>
         <progress max={1} value={progress} />
 
-        {BREAKPOINTS.slice(0, -1).map((duration, i) => (
-          <div
-            key={i}
-            className={styles.marker}
-            style={{
-              left: `${(duration / MAX_DURATION) * 100}%`,
-            }}
-          />
-        ))}
+        {gameState === GameState.PLAYING &&
+          BREAKPOINTS.slice(0, -1).map((duration, i) => (
+            <div
+              key={i}
+              className={styles.marker}
+              style={{
+                left: `${(duration / MAX_DURATION) * 100}%`,
+              }}
+            />
+          ))}
       </div>
     </div>
   )

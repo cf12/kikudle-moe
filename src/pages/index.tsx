@@ -1,12 +1,10 @@
-import type { NextPage } from "next"
-
+import Answers from "components/Answers"
+import Footer from "components/Footer"
 import Nav from "components/Nav"
 import Video from "components/Video"
-import Footer from "components/Footer"
-
+import type { NextPage } from "next"
+import Head from "next/head"
 import styles from "./index.module.scss"
-import AnimeInput from "components/AnimeInput"
-import Answers from "components/Answers"
 
 const IndexPage: NextPage = () => {
   return (
