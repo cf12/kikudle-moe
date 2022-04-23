@@ -1,0 +1,27 @@
+@import "styles";
+
+.container {
+  z-index: 10000;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: $bg;
+
+  // transition: clip-path 1s cubic-bezier(0.25, 1, 0.5, 1);
+
+  & > h1 {
+    font-size: 6rem;
+  }
+
+  // &.enterActive, &.exit {
+  //   & > h1 {
+  //     opacity: 1;
+  //     transform: translateY(0) rotate(0) scale(1);
+  //   }
+  // }
+}

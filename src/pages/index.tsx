@@ -2,6 +2,7 @@ import Answers from "components/Answers"
 import Footer from "components/Footer"
 import Nav from "components/Nav"
 import Video from "components/Video"
+import withSplash from "hocs/withSplash"
 import type { NextPage } from "next"
 import Head from "next/head"
 import styles from "./index.module.scss"
@@ -35,4 +36,4 @@ const IndexPage: NextPage = () => {
   )
 }
 
-export default IndexPage
+export default withSplash(IndexPage)
