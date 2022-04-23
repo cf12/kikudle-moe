@@ -2,6 +2,9 @@ import request from "graphql-request"
 import create from "zustand"
 import { persist } from "zustand/middleware"
 import dayjs from "dayjs"
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(utc)
 
 const MAX_STAGES = 5
 
@@ -20,28 +23,42 @@ const useStore = create(
       solutionDate: null,
       gameState: GameState.LOADING,
 
+      previous: [],
+
       reset: () => {
+        const { previous, answers, gameState, solutionDate, solution } = get()
+
         set({
           answers: [],
           solution: null,
           solutionDate: null,
           gameState: GameState.LOADING,
+
+          previous: [
+            ...previous,
+            {
+              attempts: answers.length,
+              date: solutionDate,
+              solutionId: solution.id,
+            },
+          ],
         })
       },
 
       init: async () => {
         const { solution, solutionDate, reset } = get()
 
-        if (dayjs().isAfter(solutionDate)) {
-          console.log('[i] New day, new solution!')
+        if (dayjs.utc().isAfter(solutionDate, 'day')) {
+          console.log("[i] New day, new solution!")
           reset()
+        } else if (solution) {
+          return
         }
 
-        if (solution) return
-
         // TODO: Gamestate for no data / when this fails
-        const { url, anilist_id, date } = (await (await fetch("/api/today")).json())
-          .data
+        const { url, anilist_id, date } = (
+          await (await fetch("/api/today")).json()
+        ).data
         const anilistData = await request(
           "https://graphql.anilist.co/",
           `
