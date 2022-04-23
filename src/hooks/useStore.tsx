@@ -1,6 +1,7 @@
 import request from "graphql-request"
 import create from "zustand"
 import { persist } from "zustand/middleware"
+import dayjs from "dayjs"
 
 const MAX_STAGES = 5
 
@@ -16,15 +17,30 @@ const useStore = create(
     (set, get) => ({
       answers: [],
       solution: null,
+      solutionDate: null,
       gameState: GameState.LOADING,
 
+      reset: () => {
+        set({
+          answers: [],
+          solution: null,
+          solutionDate: null,
+          gameState: GameState.LOADING,
+        })
+      },
+
       init: async () => {
-        const { solution } = get()
+        const { solution, solutionDate, reset } = get()
+
+        if (dayjs().isAfter(solutionDate)) {
+          console.log('[i] New day, new solution!')
+          reset()
+        }
 
         if (solution) return
 
         // TODO: Gamestate for no data / when this fails
-        const { url, anilist_id } = (await (await fetch("/api/today")).json())
+        const { url, anilist_id, date } = (await (await fetch("/api/today")).json())
           .data
         const anilistData = await request(
           "https://graphql.anilist.co/",
@@ -55,6 +71,7 @@ const useStore = create(
 
         set({
           solution: { ...anilistData.Media, video: url },
+          solutionDate: date,
           gameState: GameState.PLAYING,
         })
       },
