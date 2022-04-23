@@ -12,16 +12,8 @@
 
   background-color: $bg;
 
-  // transition: clip-path 1s cubic-bezier(0.25, 1, 0.5, 1);
-
   & > h1 {
+    font-family: 'Noto Sans JP', sans-serif;
     font-size: 6rem;
   }
-
-  // &.enterActive, &.exit {
-  //   & > h1 {
-  //     opacity: 1;
-  //     transform: translateY(0) rotate(0) scale(1);
-  //   }
-  // }
 }

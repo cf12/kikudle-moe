@@ -85,6 +85,8 @@
       box-sizing: border-box;
       border: 1px solid $dark1;
       border-top: none;
+
+      background: rgba(white, 5%);
     }
 
     progress::-webkit-progress-bar {

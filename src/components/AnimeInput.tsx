@@ -121,10 +121,10 @@ export default function AnimeInput() {
                     }}
                   >
                     <img src={entry.coverImage.medium} alt="cover" />
-                    <p>
-                      <mark>{title.english}</mark>{" "}
-                      {title.romaji && ` • ${title.romaji}`}
-                    </p>
+                    <span>
+                      <h4>{title.english}</h4>
+                      {title.romaji && <h5>{title.romaji}</h5>}
+                    </span>
                   </li>
                 )
               })}
