@@ -3,11 +3,15 @@ import Footer from "components/Footer"
 import Nav from "components/Nav"
 import Video from "components/Video"
 import withSplash from "hocs/withSplash"
+import useStore, { GameState } from "hooks/useStore"
 import type { NextPage } from "next"
 import Head from "next/head"
+import ReactConfetti from "react-confetti"
 import styles from "./index.module.scss"
 
 const IndexPage: NextPage = () => {
+  const gameState = useStore((state) => state.gameState)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -24,6 +28,13 @@ const IndexPage: NextPage = () => {
       </main>
 
       <Footer />
+
+      {
+        gameState === GameState.WIN && <ReactConfetti 
+        recycle={false}
+        initialVelocityY={20}
+        />
+      }
 
       {/* <main className={styles.mainPreview}>
         <video src="https://giant.gfycat.com/LittleShadowyEidolonhelvum.mp4" autoPlay="autoplay" loop muted />
