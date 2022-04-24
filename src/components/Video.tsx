@@ -104,6 +104,8 @@ export default function Video() {
               videoEl.current.seekTo(0)
             }
           }}
+          onBuffer={() => setReady(false)}
+          onBufferEnd={() => setReady(true)}
           onReady={() => setReady(true)}
         />
       </div>
