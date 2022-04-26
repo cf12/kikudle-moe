@@ -1,0 +1,14 @@
+name: generate-kikudle
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate daily Kikudle
+        run: |
+          curl --request POST \
+          --url 'https://kikudle-moe-cf12.vercel.app/api/generate' \
+          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
