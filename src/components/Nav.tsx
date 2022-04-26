@@ -5,32 +5,44 @@ import utc from "dayjs/plugin/utc"
 import relativeTime from "dayjs/plugin/relativeTime"
 import duration from "dayjs/plugin/duration"
 import Tippy from "@tippyjs/react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import useStore from "hooks/useStore"
 
 dayjs.extend(utc)
 dayjs.extend(relativeTime)
 dayjs.extend(duration)
 
 export default function Nav() {
-  const [time, setTime] = useState("--:--:--")
+  const [time, setTime] = useState(null)
+  const solutionDate = useStore((state) => state.solutionDate)
+
+  const end = useMemo(() => {
+    return solutionDate && dayjs.utc(solutionDate).endOf("day")
+  }, [solutionDate])
 
   useEffect(() => {
+    if (!end) return
+
     const interval = setInterval(() => {
       const now = dayjs.utc()
-      const end = now.endOf("day")
-      const duration = dayjs.duration(end - now)
-      setTime(duration.format("HH:mm:ss"))
+      setTime(dayjs.duration(end - now))
     }, 1000)
 
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
+    return () => clearInterval(interval)
+  }, [end])
+
+  const timeDisplay = time
+    ? time.asSeconds() >= 0
+      ? time.format("HH:mm:ss")
+      : "REPLAYING"
+    : "--:--:--"
+
+  const timeStyle = timeDisplay === "REPLAYING" ? styles.orange : styles.green
 
   return (
     <nav className={styles.container}>
       <div className={styles.containerInner}>
-        <span className={styles.left}>
+        <span className={styles.left + " " + timeStyle}>
           <Tippy
             duration={200}
             maxWidth={300}
@@ -46,7 +58,7 @@ export default function Nav() {
               </div>
             }
           >
-            <p>{time}</p>
+            <p>{timeDisplay}</p>
           </Tippy>
         </span>
 

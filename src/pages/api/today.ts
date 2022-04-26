@@ -22,12 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase
       .from("solutions_today")
       .select("*")
-      .eq("date", new Date().toISOString().substr(0, 10))
+      .order("date", { ascending: false })
+      .limit(1)
 
     if (error) {
       throw error
     } else if (!data[0]) {
-      res.status(404).json({ error: "No entry for today" })
+      res.status(404).json({ error: "No entries found" })
     } else {
       res.status(200).json({ data: data[0] })
     }
