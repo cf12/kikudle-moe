@@ -3,6 +3,10 @@ import { gql, GraphQLClient } from "graphql-request"
 import type { NextApiRequest, NextApiResponse } from "next"
 import fetch from "node-fetch"
 import qs from "qs"
+import dayjs from "dayjs"
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(utc)
 
 // Ensure env variables are set
 if (
@@ -139,15 +143,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
 
-    const date = new Date()
-    date.setUTCHours(0, 0, 0, 0)
-    date.setDate(date.getDate() + 1)
+    const date = dayjs.utc().format('YYYY-MM-DD')
 
     // Check if solution for tomorrow already exists
     const { data: existingData } = await supabase
       .from("solutions_today")
       .select("*")
-      .eq("date", date.toISOString())
+      .eq("date", date)
 
     if (existingData?.length) {
       console.log(`[i] Found existing entry for ${date}`)
@@ -197,7 +199,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log("[i] Committed to Supabase")
 
-    res.status(200).json({
+    res.status(404).json({
       data,
     })
   } catch (err) {
