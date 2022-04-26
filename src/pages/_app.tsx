@@ -5,6 +5,7 @@ import useStore from "hooks/useStore"
 
 import "normalize.css"
 import "styles/global.scss"
+import "tippy.js/dist/tippy.css"
 
 function MyApp({ Component, pageProps }: AppProps) {
   const init = useStore((store) => store.init)

@@ -4,5 +4,12 @@ body {
   background-color: $bg;
   color: white;
 
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
+}
+
+.tippy-box {
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: 500;
+
+  padding: 2px 12px;
 }

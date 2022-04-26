@@ -60,11 +60,11 @@
     gap: 24px;
 
     &.correct {
-      background-color: rgba(limegreen, 25%);
-      border-color: limegreen;
+      background-color: rgba($green, 25%);
+      border-color: $green;
 
       & > img {
-        border-color: limegreen;
+        border-color: $green;
       }
     }
 
@@ -122,9 +122,9 @@
         font-weight: 600;
 
         &.correct {
-          background-color: rgba(limegreen, 10%);
-          color: limegreen;
-          border: 1px solid limegreen;
+          background-color: rgba($green, 10%);
+          color: $green;
+          border: 1px solid $green;
         }
       }
     }
@@ -171,11 +171,11 @@
     .below,
     .above,
     .incorrect {
-      color: orange;
+      color: $orange;
     }
 
     .correct {
-      color: limegreen;
+      color: $green;
     }
 
     .none {
@@ -227,7 +227,7 @@
       .below,
       .above,
       .incorrect {
-        color: orange;
+        color: $orange;
       }
 
       .below::after {
@@ -239,7 +239,7 @@
       }
 
       .correct {
-        color: limegreen;
+        color: $green;
       }
 
       .none {

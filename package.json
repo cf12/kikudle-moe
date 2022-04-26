@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.33.3",
+    "@tippyjs/react": "^4.2.6",
     "@types/qs": "^6.9.7",
     "@types/seedrandom": "^3.0.2",
     "dayjs": "^1.11.1",

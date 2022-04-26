@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (error) {
       throw error
     } else if (!data[0]) {
-      res.status(500).json({ error: "No entry for today" })
+      res.status(404).json({ error: "No entry for today" })
     } else {
       res.status(200).json({ data: data[0] })
     }

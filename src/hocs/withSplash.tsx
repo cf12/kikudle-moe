@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion"
 import React, { useEffect, useRef, useState } from "react"
-// import { useTransition, animated } from "react-spring"
 
 import styles from "./withSplash.module.scss"
 
@@ -8,6 +7,7 @@ const variantsContainer = {
   hidden: { clipPath: "circle(100%)" },
   exit: { clipPath: "circle(0%)" },
 }
+
 const variantsChildren = {
   hidden: {
     opacity: 0,
@@ -27,11 +27,6 @@ const withSplash = (Component) => {
   const NewComponent = (props) => {
     const [mounted, setMounted] = useState(true)
 
-    // const transitions = useTransition(mounted, {
-    //   enter: { clipPath: "circle(100%)" },
-    //   leave: { clipPath: "circle(0)" },
-    // })
-
     useEffect(() => {
       setTimeout(() => {
         setMounted(false)
@@ -40,18 +35,6 @@ const withSplash = (Component) => {
 
     return (
       <>
-        {/* {transitions(
-          (componentStyles, item) =>
-            item && (
-              <animated.div
-                className={styles.container}
-                style={componentStyles}
-              >
-                <h1>き</h1>
-                <h1>く</h1>
-              </animated.div>
-            )
-        )} */}
         <AnimatePresence>
           {mounted && (
             <motion.div

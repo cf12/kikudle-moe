@@ -161,13 +161,13 @@
       }
 
       &.submit {
-        border: 1px solid rgba(green, 75%);
-        background-color: rgba(green, 25%);
+        border: 1px solid rgba($green, 75%);
+        background-color: rgba($green, 20%);
 
         &:hover:enabled,
         &:active:enabled {
-          border: 1px solid green;
-          background-color: rgba(green, 40%);
+          border: 1px solid $green;
+          background-color: rgba($green, 30%);
         }
       }
     }

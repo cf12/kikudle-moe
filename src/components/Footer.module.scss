@@ -29,7 +29,7 @@
 
 .containerWin {
   background: none;
-  background-color: rgba(green, 20%);
+  background-color: rgba($green, 20%);
   text-align: center;
 
   p {
@@ -49,7 +49,7 @@
 
 .containerLose {
   background: none;
-  background-color: rgba(red, 20%);
+  background-color: rgba($red, 20%);
   text-align: center;
 
   p {
