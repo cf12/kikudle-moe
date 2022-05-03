@@ -153,7 +153,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (existingData?.length) {
       console.log(`[i] Found existing entry for ${date}`)
-      res.status(200).json({ data: existingData[0] })
+      res.status(409).json({ data: existingData[0] })
       return
     }
 
