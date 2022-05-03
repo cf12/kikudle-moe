@@ -199,7 +199,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log("[i] Committed to Supabase")
 
-    res.status(404).json({
+    res.status(200).json({
       data,
     })
   } catch (err) {

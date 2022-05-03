@@ -12,12 +12,9 @@ jobs:
         run: |
           curl --request POST \
           --url 'https://kikudle-moe-cf12.vercel.app/api/generate' \
-          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
-
-          if [ $? -eq 0 ]; then
-            echo 'SUCCESS'
-          else
-            echo 'FAILURE'
-          fi
+          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}' \
+          --fail \
+            && echo 'SUCCESS' \
+            || echo 'FAILURE'
 
           
