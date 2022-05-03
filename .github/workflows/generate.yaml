@@ -5,11 +5,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  cron:
+  ping:
     runs-on: ubuntu-latest
     steps:
       - run: |
           curl --request POST \
           --url 'https://kikudle-moe-cf12.vercel.app/api/generate' \
           --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}' \
-          --fail-with-body
+          --fail 2>&1
