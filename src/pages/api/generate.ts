@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import fetch from "node-fetch"
 import qs from "qs"
 import dayjs from "dayjs"
-import utc from 'dayjs/plugin/utc'
+import utc from "dayjs/plugin/utc"
 
 dayjs.extend(utc)
 
@@ -139,7 +139,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
 
-    const date = dayjs.utc().format('YYYY-MM-DD')
+    const date = dayjs.utc().format("YYYY-MM-DD")
 
     // Check if solution for today already exists
     const { data: existingData } = await supabase
@@ -159,7 +159,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ).data?.map((entry) => entry.theme_id)
 
     // Generate new solution
-    const topAnilist = await getTopAnilist(10) // 10 * 50 = top 500 anime
+    const pages = Math.ceil(existingThemeIds?.length / 50) + 1
+    console.log(`[i] Getting ${pages} page(s) of top anime`)
+    const topAnilist = await getTopAnilist(pages)
+
     let retries = MAX_RETRIES
     let anime, video
 
@@ -174,7 +177,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!video) throw new Error("Could not find theme")
 
-    const { anilist_id, anime_id } = anime
+    const { anilist_id, id: anime_id } = anime
     const { url, video_id, theme_id, theme_slug } = video
     const data = {
       date,
@@ -183,6 +186,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       theme_slug,
       video_id,
       url,
+      anime_id,
     }
 
     console.log(`[i] Found valid anime: #${anilist_id}`)
