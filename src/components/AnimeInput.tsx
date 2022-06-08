@@ -14,7 +14,7 @@ const fetcher = (query: string) => {
     `
       query($search: String, $isAdult: Boolean) {
         anime: Page(perPage: 30) {
-          results: media(type: ANIME, isAdult: $isAdult, search: $search) {
+          results: media(type: ANIME, isAdult: $isAdult, search: $search, sort: POPULARITY_DESC) {
             id
             title {
               romaji
