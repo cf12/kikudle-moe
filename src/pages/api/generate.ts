@@ -132,7 +132,7 @@ const getVideo = async (slug: string, existingThemeIds: number[]) => {
   if (!candidate) return null
 
   // Check if video is valid
-  const testRes = await fetch(candidate.url, { redirect: "manual" })
+  const testRes = await fetch(candidate.url)
   return testRes.status === 200 && candidate
 }
 
@@ -163,9 +163,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ).data?.map((entry) => entry.theme_id)
 
     // Generate new solution
-    const topAnilist = await getTopAnilist(1) // 10 * 50 = top 500 anime
+    const topAnilist = await getTopAnilist(10) // 10 * 50 = top 500 anime
     let retries = MAX_RETRIES
     let anime, video
+
+    console.log(topAnilist)
 
     do {
       anime = await getAnime(topAnilist)
