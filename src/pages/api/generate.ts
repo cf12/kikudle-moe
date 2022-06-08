@@ -51,7 +51,6 @@ const getTopAnilist = async (pages = 1) => {
               romaji
             }
             id
-            idMal
           }
         }
       }
@@ -64,27 +63,24 @@ const getTopAnilist = async (pages = 1) => {
 }
 
 const getAnime = async (anime: any[]) => {
-  const find = async (external_id: number, site: string) => {
+  const find = async (external_id: number) => {
     return (
       await animethemes("/resource", {
         include: "anime",
         filter: {
           external_id,
-          site,
+          site: "Anilist",
         },
       })
     ).resources.find(({ anime }) => anime.length === 1)?.anime?.[0]
   }
 
-  const { id, idMal } = anime[Math.floor(Math.random() * anime.length)]
+  const { id } = anime[Math.floor(Math.random() * anime.length)]
   let ret
 
-  ret = await find(id, "Anilist")
+  ret = await find(id)
 
-  // Fallback to MyAnimeList
-  if (!ret) ret = await find(idMal, "MyAnimeList")
-
-  return { ...ret, anilist_id: id, mal_id: idMal }
+  return { ...ret, anilist_id: id }
 }
 
 const getVideo = async (slug: string, existingThemeIds: number[]) => {
@@ -145,7 +141,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const date = dayjs.utc().format('YYYY-MM-DD')
 
-    // Check if solution for tomorrow already exists
+    // Check if solution for today already exists
     const { data: existingData } = await supabase
       .from("solutions_today")
       .select("*")
@@ -167,8 +163,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let retries = MAX_RETRIES
     let anime, video
 
-    console.log(topAnilist)
-
     do {
       anime = await getAnime(topAnilist)
       console.log(`[i] Retries remaining: ${retries}`)
@@ -180,12 +174,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!video) throw new Error("Could not find theme")
 
-    const { anilist_id, mal_id, anime_id } = anime
+    const { anilist_id, anime_id } = anime
     const { url, video_id, theme_id, theme_slug } = video
     const data = {
       date,
       anilist_id,
-      mal_id,
       theme_id,
       theme_slug,
       video_id,
