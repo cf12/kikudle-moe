@@ -65,7 +65,7 @@ export default function Nav() {
         <h1 className={styles.center}>Kikudle</h1>
 
         <span className={styles.right}>
-          <IoIosInformationCircle />
+          {/* <IoIosInformationCircle /> */}
         </span>
       </div>
     </nav>
