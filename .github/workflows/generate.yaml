@@ -10,6 +10,6 @@ jobs:
     steps:
       - run: |
           curl --request POST \
-          --url 'https://kikudle.moe/api/generate' \
+          --url 'https://kikudle.cf12.org/api/generate' \
           --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}' \
           --fail 2>&1
